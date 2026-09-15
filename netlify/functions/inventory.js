@@ -1,43 +1,49 @@
+import { Client } from 'pg';
+
 export async function handler(event, context) {
-    // CORS headers
     const headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Content-Type': 'application/json',
     };
 
-    if (event.httpMethod === 'OPTIONS') {
-        return { statusCode: 200, headers, body: '' };
-    }
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: { rejectUnauthorized: false } // Required for Netlify Postgres
+    });
 
     try {
-        // Netlify Database REST API
-        const DB_URL = process.env.NETLIFY_DATABASE_URL;
-        const TOKEN = process.env.NETLIFY_DATABASE_TOKEN;
+        await client.connect();
 
-        if (!DB_URL || !TOKEN) {
-            throw new Error('Database credentials not configured');
-        }
-
-        // Get query parameters
         const params = event.queryStringParameters || {};
-        let query = 'SELECT * FROM vehicles WHERE 1=1';
-        
-        // Add filters
+        let whereClause = [];
+        let values = [];
+        let paramIndex = 1;
+
         if (params.category && params.category !== 'all') {
-            query += ` AND category = '${params.category}'`;
+            whereClause.push(`category = $${paramIndex++}`);
+            values.push(params.category);
         }
         if (params.make && params.make !== 'all') {
-            query += ` AND make = '${params.make}'`;
+            whereClause.push(`make = $${paramIndex++}`);
+            values.push(params.make);
         }
         if (params.engine) {
-            query += ` AND engine = '${params.engine}'`;
+            whereClause.push(`engine = $${paramIndex++}`);
+            values.push(params.engine);
         }
         if (params.status) {
-            query += ` AND status = '${params.status}'`;
+            whereClause.push(`status = $${paramIndex++}`);
+            values.push(params.status);
         }
         if (params.search) {
-            query += ` AND name LIKE '%${params.search}%'`;
+            whereClause.push(`name ILIKE $${paramIndex++}`);
+            values.push(`%${params.search}%`);
+        }
+
+        let query = 'SELECT * FROM vehicles';
+        if (whereClause.length > 0) {
+            query += ' WHERE ' + whereClause.join(' AND ');
         }
 
         // Sorting
@@ -46,24 +52,12 @@ export async function handler(event, context) {
         const sortField = field === 'price' ? 'price_num' : field === 'year' ? 'year_num' : 'rating_num';
         query += ` ORDER BY ${sortField} ${direction === 'asc' ? 'ASC' : 'DESC'}`;
 
-        // Query database
-        const response = await fetch(`${DB_URL}/query`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${TOKEN}`
-            },
-            body: JSON.stringify({ query })
-        });
+        console.log('Query:', query, 'Values:', values);
 
-        if (!response.ok) {
-            throw new Error(`Database error: ${response.status}`);
-        }
+        const result = await client.query(query, values);
+        await client.end();
 
-        const data = await response.json();
-
-        // Transform rows to match frontend format
-        const vehicles = (data.results || []).map(row => ({
+        const vehicles = result.rows.map(row => ({
             id: row.id,
             name: row.name,
             price: row.price,
@@ -92,11 +86,14 @@ export async function handler(event, context) {
 
         return {
             statusCode: 200,
-            headers: { ...headers, 'Content-Type': 'application/json' },
+            headers,
             body: JSON.stringify(vehicles),
         };
+
     } catch (error) {
-        console.error('Function error:', error);
+        console.error('Database error:', error);
+        await client.end().catch(() => {});
+        
         return {
             statusCode: 500,
             headers,
