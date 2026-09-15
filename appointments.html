@@ -15,15 +15,10 @@
             --accent-gold-light: #e8d48b;
             --text-primary: #f0f6fc;
             --text-secondary: #8b949e;
-            --text-muted: #6e7681;
             --border: #30363d;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -219,25 +214,18 @@
             box-shadow: 0 8px 25px rgba(201, 162, 39, 0.3);
         }
 
-        .status-message {
+        .success-message {
+            display: none;
             margin-top: 1.5rem;
             padding: 1rem;
-            border-radius: 8px;
-            text-align: center;
-            display: none;
-        }
-
-        .status-message.success {
             background: rgba(46, 204, 113, 0.2);
             border: 1px solid #2ecc71;
             color: #2ecc71;
-            display: block;
+            border-radius: 8px;
+            text-align: center;
         }
 
-        .status-message.error {
-            background: rgba(231, 76, 60, 0.2);
-            border: 1px solid #e74c3c;
-            color: #e74c3c;
+        .success-message.visible {
             display: block;
         }
 
@@ -268,28 +256,30 @@
             <p>Schedule your private viewing or test drive</p>
         </div>
 
-        <form class="booking-form" id="bookingForm">
+        <!-- Netlify Form - submits to Netlify, triggers function -->
+        <form class="booking-form" name="appointments" method="POST" data-netlify="true" action="/success">
+            <input type="hidden" name="form-name" value="appointments">
+            
             <div class="form-row">
                 <div class="form-group">
                     <label>Full Name <span>*</span></label>
-                    <input type="text" id="name" name="name" required placeholder="Von Hayes">
+                    <input type="text" name="name" required placeholder="John Doe">
                 </div>
                 <div class="form-group">
                     <label>State ID <span>*</span></label>
-                    <input type="text" id="state_id" name="state_id" required placeholder="3288">
+                    <input type="text" name="state_id" required placeholder="SA-12345678">
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label>Phone Number <span>*</span></label>
-                    <input type="tel" id="phone" name="phone" required placeholder="555-123-4567">
+                    <input type="tel" name="phone" required placeholder="555-123-4567">
                 </div>
                 <div class="form-group">
                     <label>Vehicle Interest <span>*</span></label>
-                    <select id="car_interest" name="car_interest" required>
+                    <select name="car_interest" id="car_interest" required>
                         <option value="">Select a vehicle...</option>
-                        <!-- Populated by JavaScript from inventory -->
                     </select>
                 </div>
             </div>
@@ -297,18 +287,14 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Preferred Date <span>*</span></label>
-                    <input type="date" id="appointment_date" name="appointment_date" required>
+                    <input type="date" name="appointment_date" id="appointment_date" required>
                 </div>
                 <div class="form-group">
                     <label>Preferred Time <span>*</span></label>
                     <div class="time-selector">
-                        <select id="hour-select" name="appointment_hour" required>
-                            <!-- Populated by JS (0-23) -->
-                        </select>
+                        <select name="appointment_hour" id="hour-select" required></select>
                         <span class="time-separator">:</span>
-                        <select id="minute-select" name="appointment_minute" required>
-                            <!-- Populated by JS (00, 30) -->
-                        </select>
+                        <select name="appointment_minute" id="minute-select" required></select>
                     </div>
                 </div>
             </div>
@@ -316,7 +302,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Financing Interest</label>
-                    <select id="financing" name="financing">
+                    <select name="financing">
                         <option value="Yes">Yes</option>
                         <option value="No" selected>No</option>
                         <option value="IDK">IDK</option>
@@ -327,7 +313,7 @@
             <div class="form-row">
                 <div class="form-group full-width">
                     <label>Additional Notes</label>
-                    <textarea id="notes" name="notes" rows="3" placeholder="Any specific requests or questions..."></textarea>
+                    <textarea name="notes" rows="3" placeholder="Any specific requests or questions..."></textarea>
                 </div>
             </div>
 
@@ -335,12 +321,14 @@
                 <i class="fas fa-calendar-check"></i> Book Appointment
             </button>
 
-            <div id="statusMessage" class="status-message"></div>
+            <div class="success-message" id="successMsg">
+                ✓ Appointment booked! Check your phone for confirmation.
+            </div>
         </form>
     </div>
 
     <script>
-        // Vehicle inventory data (same as inventory.html)
+        // Vehicle inventory data
         const vehicles = [
             { name: "Grotti Turismo Omaggio", price: "$425,833" },
             { name: "Bravado Banshee GTS", price: "$402,500" },
@@ -366,144 +354,78 @@
             { name: "Benefactor Schlagen GT", price: "$211,850" }
         ];
 
-        // Populate vehicle dropdown from inventory
-        function populateVehicleDropdown() {
+        // Populate vehicle dropdown
+        function populateVehicles() {
             const select = document.getElementById('car_interest');
-            
-            vehicles.forEach(vehicle => {
-                const option = document.createElement('option');
-                option.value = vehicle.name;
-                option.textContent = vehicle.name + ' (' + vehicle.price + ')';
-                select.appendChild(option);
+            vehicles.forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v.name;
+                opt.textContent = v.name + ' (' + v.price + ')';
+                select.appendChild(opt);
             });
         }
 
-        // Check for pre-selected vehicle from URL
-        function checkPreselectedVehicle() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const preselectedCar = urlParams.get('car');
-            
-            if (preselectedCar) {
+        // Check for pre-selected car from URL
+        function checkPreselected() {
+            const params = new URLSearchParams(window.location.search);
+            const car = params.get('car');
+            if (car) {
                 const select = document.getElementById('car_interest');
-                // Find matching vehicle (handle URL encoding)
-                const decodedCar = decodeURIComponent(preselectedCar);
-                
-                // Check if option exists
-                let found = false;
+                const decoded = decodeURIComponent(car);
+                // Try to find and select it
                 for (let i = 0; i < select.options.length; i++) {
-                    if (select.options[i].value === decodedCar) {
+                    if (select.options[i].value === decoded) {
                         select.selectedIndex = i;
-                        found = true;
-                        break;
+                        return;
                     }
                 }
-                
-                // If not found in list, add it as a custom option
-                if (!found && decodedCar) {
-                    const option = document.createElement('option');
-                    option.value = decodedCar;
-                    option.textContent = decodedCar;
-                    select.insertBefore(option, select.options[1]);
-                    select.selectedIndex = 1;
-                }
+                // If not found, add it
+                const opt = document.createElement('option');
+                opt.value = decoded;
+                opt.textContent = decoded;
+                select.insertBefore(opt, select.options[1]);
+                select.selectedIndex = 1;
             }
         }
 
         // Initialize time selector
-        function initTimeSelector() {
-            const hourSelect = document.getElementById('hour-select');
-            const minuteSelect = document.getElementById('minute-select');
+        function initTime() {
+            const hourSel = document.getElementById('hour-select');
+            const minSel = document.getElementById('minute-select');
             const dateInput = document.getElementById('appointment_date');
 
-            // Populate hours (0-23)
+            // Hours 0-23
             for (let i = 0; i < 24; i++) {
-                const option = document.createElement('option');
-                option.value = String(i).padStart(2, '0');
-                option.textContent = String(i).padStart(2, '0');
-                hourSelect.appendChild(option);
+                const opt = document.createElement('option');
+                opt.value = String(i).padStart(2, '0');
+                opt.textContent = String(i).padStart(2, '0');
+                hourSel.appendChild(opt);
             }
 
-            // Populate minutes (ONLY 00 and 30)
-            ['00', '30'].forEach(min => {
-                const option = document.createElement('option');
-                option.value = min;
-                option.textContent = min;
-                minuteSelect.appendChild(option);
+            // Minutes: only 00, 30
+            ['00', '30'].forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = m;
+                minSel.appendChild(opt);
             });
 
-            // Set defaults
-            hourSelect.value = '14';
-            minuteSelect.value = '00';
+            hourSel.value = '14';
+            minSel.value = '00';
 
-            // Set minimum date to today
-            const today = new Date().toISOString().split('T')[0];
-            dateInput.min = today;
+            // Min date = today
+            dateInput.min = new Date().toISOString().split('T')[0];
         }
 
-        // Generate unique appointment ID
-        function generateAppointmentId() {
-            return 'appt_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        // Show success message if form submitted
+        if (window.location.search.includes('success')) {
+            document.getElementById('successMsg').classList.add('visible');
         }
 
-        // Form submission
-        document.getElementById('bookingForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const statusDiv = document.getElementById('statusMessage');
-            const formData = new FormData(this);
-            
-            const data = {
-                name: formData.get('name'),
-                state_id: formData.get('state_id'),
-                phone: formData.get('phone'),
-                car_interest: formData.get('car_interest'),
-                financing: formData.get('financing'),
-                notes: formData.get('notes'),
-                appointment_date: formData.get('appointment_date'),
-                appointment_hour: formData.get('appointment_hour'),
-                appointment_minute: formData.get('appointment_minute')
-            };
-            
-            const appointmentId = generateAppointmentId();
-            
-            try {
-                const response = await fetch('http://localhost:3000/send-notification', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        id: appointmentId,
-                        data: data
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (response.ok && result.success) {
-                    statusDiv.className = 'status-message success';
-                    statusDiv.textContent = result.skipped 
-                        ? '✓ Appointment already sent!' 
-                        : '✓ Appointment booked! Check your phone for confirmation.';
-                    this.reset();
-                    initTimeSelector();
-                    populateVehicleDropdown(); // Repopulate after reset
-                } else {
-                    throw new Error(result.error || 'Booking failed');
-                }
-            } catch (error) {
-                statusDiv.className = 'status-message error';
-                statusDiv.textContent = '✗ Error: ' + error.message;
-                console.error('Error:', error);
-            }
-            
-            setTimeout(() => {
-                statusDiv.className = 'status-message';
-            }, 5000);
-        });
-
-        // Initialize on load
-        populateVehicleDropdown();
-        checkPreselectedVehicle();
-        initTimeSelector();
+        // Init
+        populateVehicles();
+        checkPreselected();
+        initTime();
     </script>
 </body>
 </html>
