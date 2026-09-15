@@ -1,85 +1,446 @@
-// Time picker with restricted minutes (only :00 or :30)
-function initTimePicker() {
-    const timeInput = document.getElementById('time-input'); // or your time element
-    
-    timeInput.addEventListener('change', function(e) {
-        const timeValue = e.target.value; // "HH:MM" format
-        
-        if (timeValue) {
-            const [hours, minutes] = timeValue.split(':').map(Number);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment | Black Label Autos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --accent-gold: #c9a227;
+            --accent-gold-light: #e8d48b;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --border: #30363d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 5%;
+            background: rgba(13, 17, 23, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: var(--bg-primary);
+        }
+
+        .nav-logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 1px;
+        }
+
+        .nav-logo-text span {
+            color: var(--accent-gold);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 120px 20px 60px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header h1 span {
+            color: var(--accent-gold);
+        }
+
+        .page-header p {
+            color: var(--text-secondary);
+        }
+
+        .booking-form {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            color: var(--text-primary);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group label span {
+            color: var(--accent-gold);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        /* Time selector styling */
+        .time-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .time-selector select {
+            width: auto;
+            min-width: 70px;
+            text-align: center;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        .time-separator {
+            color: var(--accent-gold);
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--accent-gold);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background: var(--accent-gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(201, 162, 39, 0.3);
+        }
+
+        .status-message {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        .status-message.success {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid #2ecc71;
+            color: #2ecc71;
+            display: block;
+        }
+
+        .status-message.error {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <div class="nav-logo-icon">
+                <i class="fas fa-crown"></i>
+            </div>
+            <div class="nav-logo-text">BLACK <span>LABEL</span></div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="inventory.html">Inventory</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Book <span>Appointment</span></h1>
+            <p>Schedule your private viewing or test drive</p>
+        </div>
+
+        <form class="booking-form" id="bookingForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Full Name <span>*</span></label>
+                    <input type="text" id="name" name="name" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label>State ID <span>*</span></label>
+                    <input type="text" id="state_id" name="state_id" required placeholder="SA-12345678">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Phone Number <span>*</span></label>
+                    <input type="tel" id="phone" name="phone" required placeholder="555-123-4567">
+                </div>
+                <div class="form-group">
+                    <label>Vehicle Interest <span>*</span></label>
+                    <select id="car_interest" name="car_interest" required>
+                        <option value="">Select a vehicle...</option>
+                        <option value="Grotti Turismo Omaggio">Grotti Turismo Omaggio</option>
+                        <option value="Pegassi Infernus">Pegassi Infernus</option>
+                        <option value="Pegassi Tempesta Spyder">Pegassi Tempesta Spyder</option>
+                        <option value="Grotti Itali GTO">Grotti Itali GTO</option>
+                        <option value="Pfister 811">Pfister 811</option>
+                        <option value="Other">Other - See Notes</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Date and Time Row -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Preferred Date <span>*</span></label>
+                    <input type="date" id="appointment_date" name="appointment_date" required>
+                </div>
+                <div class="form-group">
+                    <label>Preferred Time <span>*</span></label>
+                    <div class="time-selector">
+                        <select id="hour-select" name="appointment_hour" required>
+                            <!-- Populated by JS (0-23) -->
+                        </select>
+                        <span class="time-separator">:</span>
+                        <select id="minute-select" name="appointment_minute" required>
+                            <!-- Populated by JS (00, 30) -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Financing Interest</label>
+                    <select id="financing" name="financing">
+                        <option value="No">No financing needed</option>
+                        <option value="Yes">Yes - interested in financing</option>
+                        <option value="Maybe">Maybe - want to discuss options</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group full-width">
+                    <label>Additional Notes</label>
+                    <textarea id="notes" name="notes" rows="3" placeholder="Any specific requests or questions..."></textarea>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-calendar-check"></i> Book Appointment
+            </button>
+
+            <div id="statusMessage" class="status-message"></div>
+        </form>
+    </div>
+
+    <script>
+        // Initialize time selector with only :00 and :30, 24-hour format
+        function initTimeSelector() {
+            const hourSelect = document.getElementById('hour-select');
+            const minuteSelect = document.getElementById('minute-select');
+            const dateInput = document.getElementById('appointment_date');
+
+            // Populate hours (0-23 for all timezones)
+            for (let i = 0; i < 24; i++) {
+                const option = document.createElement('option');
+                option.value = String(i).padStart(2, '0');
+                option.textContent = String(i).padStart(2, '0');
+                hourSelect.appendChild(option);
+            }
+
+            // Populate minutes (ONLY 00 and 30)
+            ['00', '30'].forEach(min => {
+                const option = document.createElement('option');
+                option.value = min;
+                option.textContent = min;
+                minuteSelect.appendChild(option);
+            });
+
+            // Set defaults
+            hourSelect.value = '14';
+            minuteSelect.value = '00';
+
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.min = today;
+        }
+
+        // Generate unique appointment ID
+        function generateAppointmentId() {
+            return 'appt_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Form submission
+        document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
             
-            // Round to nearest 30 minutes
-            let roundedMinutes;
-            if (minutes < 15) {
-                roundedMinutes = 0;
-            } else if (minutes < 45) {
-                roundedMinutes = 30;
-            } else {
-                roundedMinutes = 0;
-                // Roll over to next hour
-                const newHours = (hours + 1) % 24;
-                e.target.value = `${String(newHours).padStart(2, '0')}:00`;
-                return;
+            const statusDiv = document.getElementById('statusMessage');
+            const formData = new FormData(this);
+            
+            // Build data object
+            const data = {
+                name: formData.get('name'),
+                state_id: formData.get('state_id'),
+                phone: formData.get('phone'),
+                car_interest: formData.get('car_interest'),
+                financing: formData.get('financing'),
+                notes: formData.get('notes'),
+                appointment_date: formData.get('appointment_date'),
+                appointment_hour: formData.get('appointment_hour'),
+                appointment_minute: formData.get('appointment_minute')
+            };
+            
+            const appointmentId = generateAppointmentId();
+            
+            try {
+                const response = await fetch('http://localhost:3000/send-notification', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: appointmentId,
+                        data: data
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    statusDiv.className = 'status-message success';
+                    statusDiv.textContent = result.skipped 
+                        ? '✓ Appointment already sent!' 
+                        : '✓ Appointment booked! Check your phone for confirmation.';
+                    this.reset();
+                    initTimeSelector(); // Reset time defaults
+                } else {
+                    throw new Error(result.error || 'Booking failed');
+                }
+            } catch (error) {
+                statusDiv.className = 'status-message error';
+                statusDiv.textContent = '✗ Error: ' + error.message;
+                console.error('Error:', error);
             }
             
-            // Format with leading zeros
-            const formattedTime = `${String(hours).padStart(2, '0')}:${String(roundedMinutes).padStart(2, '0')}`;
-            e.target.value = formattedTime;
-        }
-    });
-    
-    // Also handle input/blur to prevent invalid entries
-    timeInput.addEventListener('blur', function(e) {
-        const timeValue = e.target.value;
-        if (timeValue) {
-            const [hours, minutes] = timeValue.split(':').map(Number);
-            
-            // Force to either :00 or :30
-            const validMinutes = minutes < 30 ? 0 : 30;
-            e.target.value = `${String(hours).padStart(2, '0')}:${String(validMinutes).padStart(2, '0')}`;
-        }
-    });
-}
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                statusDiv.className = 'status-message';
+            }, 5000);
+        });
 
-// Alternative: Use select dropdowns instead for bulletproof restriction
-function createTimeSelector(containerId) {
-    const container = document.getElementById(containerId);
-    
-    // Hour selector (0-23)
-    const hourSelect = document.createElement('select');
-    hourSelect.id = 'hour-select';
-    for (let i = 0; i < 24; i++) {
-        const option = document.createElement('option');
-        option.value = String(i).padStart(2, '0');
-        option.textContent = String(i).padStart(2, '0');
-        hourSelect.appendChild(option);
-    }
-    
-    // Minute selector (only 00 or 30)
-    const minuteSelect = document.createElement('select');
-    minuteSelect.id = 'minute-select';
-    [0, 30].forEach(min => {
-        const option = document.createElement('option');
-        option.value = String(min).padStart(2, '0');
-        option.textContent = String(min).padStart(2, '0');
-        minuteSelect.appendChild(option);
-    });
-    
-    // Separator
-    const separator = document.createElement('span');
-    separator.textContent = ' : ';
-    separator.style.margin = '0 5px';
-    
-    container.appendChild(hourSelect);
-    container.appendChild(separator);
-    container.appendChild(minuteSelect);
-    
-    // Get formatted time
-    return {
-        getValue: () => `${hourSelect.value}:${minuteSelect.value}`,
-        setValue: (hours, minutes) => {
-            hourSelect.value = String(hours).padStart(2, '0');
-            minuteSelect.value = minutes < 30 ? '00' : '30';
-        }
-    };
-}
+        // Initialize on load
+        initTimeSelector();
+    </script>
+</body>
+</html>
