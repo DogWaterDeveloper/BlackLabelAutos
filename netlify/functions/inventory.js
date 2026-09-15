@@ -7,58 +7,67 @@ export async function handler(event, context) {
         'Content-Type': 'application/json',
     };
 
+    // Check if DATABASE_URL exists
+    if (!process.env.DATABASE_URL) {
+        return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify({ error: 'DATABASE_URL not set' }),
+        };
+    }
+
     const client = new Client({
         connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false } // Required for Netlify Postgres
+        ssl: {
+            rejectUnauthorized: false
+        }
     });
 
     try {
+        console.log('Connecting to database...');
         await client.connect();
+        console.log('Connected!');
 
-        const params = event.queryStringParameters || {};
-        let whereClause = [];
-        let values = [];
-        let paramIndex = 1;
+        // Test simple query first
+        const testResult = await client.query('SELECT NOW() as time');
+        console.log('Server time:', testResult.rows[0].time);
 
-        if (params.category && params.category !== 'all') {
-            whereClause.push(`category = $${paramIndex++}`);
-            values.push(params.category);
-        }
-        if (params.make && params.make !== 'all') {
-            whereClause.push(`make = $${paramIndex++}`);
-            values.push(params.make);
-        }
-        if (params.engine) {
-            whereClause.push(`engine = $${paramIndex++}`);
-            values.push(params.engine);
-        }
-        if (params.status) {
-            whereClause.push(`status = $${paramIndex++}`);
-            values.push(params.status);
-        }
-        if (params.search) {
-            whereClause.push(`name ILIKE $${paramIndex++}`);
-            values.push(`%${params.search}%`);
-        }
+        // Check if vehicles table exists
+        const tableCheck = await client.query(`
+            SELECT EXISTS (
+                SELECT FROM information_schema.tables 
+                WHERE table_name = 'vehicles'
+            );
+        `);
+        
+        const tableExists = tableCheck.rows[0].exists;
+        console.log('Table exists:', tableExists);
 
-        let query = 'SELECT * FROM vehicles';
-        if (whereClause.length > 0) {
-            query += ' WHERE ' + whereClause.join(' AND ');
+        if (!tableExists) {
+            await client.end();
+            return {
+                statusCode: 500,
+                headers,
+                body: JSON.stringify({ error: 'vehicles table does not exist. Please create it first.' }),
+            };
         }
 
-        // Sorting
-        const sort = params.sort || 'price-desc';
-        const [field, direction] = sort.split('-');
-        const sortField = field === 'price' ? 'price_num' : field === 'year' ? 'year_num' : 'rating_num';
-        query += ` ORDER BY ${sortField} ${direction === 'asc' ? 'ASC' : 'DESC'}`;
+        // Get vehicles
+        const result = await client.query('SELECT * FROM vehicles LIMIT 5');
+        console.log('Found', result.rows.length, 'vehicles');
 
-        console.log('Query:', query, 'Values:', values);
-
-        const result = await client.query(query, values);
         await client.end();
 
+        if (result.rows.length === 0) {
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify({ error: 'No vehicles in database. Please import data.' }),
+            };
+        }
+
+        // Transform data
         const vehicles = result.rows.map(row => ({
-            id: row.id,
             name: row.name,
             price: row.price,
             priceNum: row.price_num,
@@ -91,13 +100,16 @@ export async function handler(event, context) {
         };
 
     } catch (error) {
-        console.error('Database error:', error);
-        await client.end().catch(() => {});
+        console.error('Error:', error);
+        try { await client.end(); } catch(e) {}
         
         return {
             statusCode: 500,
             headers,
-            body: JSON.stringify({ error: error.message }),
+            body: JSON.stringify({ 
+                error: error.message,
+                hint: 'Check function logs in Netlify dashboard'
+            }),
         };
     }
 }
