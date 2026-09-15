@@ -2,7 +2,12 @@
   "name": "blacklabel-autos",
   "version": "1.0.0",
   "dependencies": {
-    "puppeteer-core": "^19.0.0",
-    "@sparticuz/chromium": "^109.0.0"
+    "@netlify/database": "^2.0.1",
+    "@sparticuz/chromium": "^109.0.0",
+    "drizzle-orm": "^1.0.0-beta.22",
+    "puppeteer-core": "^19.0.0"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^1.0.0-beta.22"
   }
 }
