@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Label Autos | Inventory</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --bg-card: #1c2128;
+            --accent-gold: #c9a227;
+            --accent-gold-light: #e8d48b;
+            --accent-green: #22c55e;
+            --accent-blue: #3b82f6;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --border: #30363d
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'Inter',sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh
+        }
+
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg,var(--accent-gold) 0%,var(--accent-gold-light) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--bg-primary)
+        }
+
+        .logo-text {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-primary)
+        }
+
+            .logo-text span {
+                color: var(--accent-gold)
+            }
+
+        .header-stats {
+            display: flex;
+            gap: 2rem
+        }
+
+        .stat-item {
+            text-align: right
+        }
+
+        .stat-value {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 1.2rem;
+            color: var(--accent-gold);
+            font-weight: 700
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px
+        }
+
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 80px)
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 80px);
+            overflow-y: auto
+        }
+
+        .sidebar-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border)
+        }
+
+            .sidebar-section:last-child {
+                border-bottom: none
+            }
+
+        .sidebar-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem
+        }
+
+        .filter-group {
+            margin-bottom: 1rem
+        }
+
+        .filter-input, .filter-select {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.9rem
+        }
+
+            .filter-input:focus, .filter-select:focus {
+                outline: none;
+                border-color: var(--accent-gold)
+            }
+
+        .clear-filters-btn {
+            width: 100%;
+            padding: 0.7rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s
+        }
+
+            .clear-filters-btn:hover {
+                border-color: var(--accent-gold);
+                color: var(--accent-gold)
+            }
+
+        .content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem
+        }
+
+        .results-count {
+            font-size: 0.9rem;
+            color: var(--text-secondary)
+        }
+
+            .results-count span {
+                color: var(--accent-gold);
+                font-weight: 600
+            }
+
+        .sort-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem
+        }
+
+            .sort-dropdown label {
+                font-size: 0.85rem;
+                color: var(--text-secondary)
+            }
+
+            .sort-dropdown select {
+                padding: 0.5rem 1rem;
+                background: var(--bg-tertiary);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                color: var(--text-primary);
+                font-size: 0.9rem;
+                cursor: pointer
+            }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill,minmax(380px,1fr));
+            gap: 2rem
+        }
+
+        .vehicle-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column
+        }
+
+            .vehicle-card:hover {
+                transform: translateY(-8px);
+                border-color: var(--accent-gold);
+                box-shadow: 0 20px 60px rgba(201,162,39,0.15)
+            }
+
+        .card-image-container {
+            position: relative;
+            height: 240px;
+            background: linear-gradient(135deg,var(--bg-tertiary) 0%,var(--bg-secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden
+        }
+
+            .card-image-container img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                padding: 15px;
+                transition: transform 0.3s
+            }
+
+        .vehicle-card:hover .card-image-container img {
+            transform: scale(1.05)
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px
+        }
+
+        .badge-imported {
+            background: var(--accent-green);
+            color: var(--bg-primary)
+        }
+
+        .badge-local {
+            background: var(--accent-blue);
+            color: var(--bg-primary)
+        }
+
+        .card-price {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--accent-gold);
+            color: var(--bg-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-family: 'Orbitron',sans-serif;
+            font-weight: 700;
+            font-size: 1rem
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column
+        }
+
+        .card-header {
+            margin-bottom: 1rem
+        }
+
+        .card-title {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+            color: var(--text-primary)
+        }
+
+        .card-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary)
+        }
+
+        .card-stats {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 8px
+        }
+
+        .stat {
+            text-align: center
+        }
+
+        .stat-value {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 1.1rem;
+            color: var(--accent-gold);
+            font-weight: 700
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.2rem
+        }
+
+        .card-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem
+        }
+
+        .detail-tag {
+            padding: 0.3rem 0.7rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--text-secondary)
+        }
+
+        .card-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 0.8rem
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.9rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter',sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem
+        }
+
+        .btn-primary {
+            background: var(--accent-gold);
+            color: var(--bg-primary)
+        }
+
+            .btn-primary:hover {
+                background: var(--accent-gold-light);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(201,162,39,0.3)
+            }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary)
+        }
+
+            .btn-secondary:hover {
+                border-color: var(--accent-gold);
+                color: var(--accent-gold)
+            }
+
+        .no-results {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-secondary);
+            grid-column: 1/-1
+        }
+
+            .no-results i {
+                font-size: 4rem;
+                color: var(--text-muted);
+                margin-bottom: 1rem
+            }
+
+        @media(max-width:768px) {
+            .sidebar {
+                display: none
+            }
+
+            .inventory-grid {
+                grid-template-columns: 1fr
+            }
+
+            .header-stats {
+                display: none
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo-section">
+            <div class="logo-icon"><i class="fas fa-crown"></i></div>
+            <div class="logo-text">BLACK <span>LABEL</span></div>
+        </a>
+        <div class="header-stats">
+            <div class="stat-item"><div class="stat-value" id="totalVehicles">22</div><div class="stat-label">Vehicles</div></div>
+            <div class="stat-item"><div class="stat-value" id="totalValue">$6.8M</div><div class="stat-label">Inventory</div></div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title"><i class="fas fa-search"></i> Search</div>
+                <div class="filter-group"><input type="text" class="filter-input" id="searchInput" placeholder="Search vehicles..."></div>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-title"><i class="fas fa-filter"></i> Filters</div>
+                <div class="filter-group">
+                    <label style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:0.5rem;display:block">Make</label>
+                    <select class="filter-select" id="makeFilter"><option value="">All Makes</option></select>
+                </div>
+                <div class="filter-group">
+                    <label style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:0.5rem;display:block">Engine</label>
+                    <select class="filter-select" id="engineFilter">
+                        <option value="">All Engines</option>
+                        <option value="V6">V6</option>
+                        <option value="V8">V8</option>
+                        <option value="V10">V10</option>
+                        <option value="V12">V12</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:0.5rem;display:block">Import Status</label>
+                    <select class="filter-select" id="importFilter">
+                        <option value="">All Vehicles</option>
+                        <option value="imported">Imported Only</option>
+                        <option value="local">Local Stock</option>
+                    </select>
+                </div>
+            </div>
+            <div class="sidebar-section">
+                <button class="clear-filters-btn" onclick="clearFilters()"><i class="fas fa-times"></i> Clear All Filters</button>
+            </div>
+        </aside>
+
+        <main class="content">
+            <div class="top-bar">
+                <div class="results-count">Showing <span id="resultsCount">22</span> vehicles</div>
+                <div class="sort-dropdown">
+                    <label for="sortSelect">Sort by:</label>
+                    <select id="sortSelect">
+                        <option value="price-desc">Price: High to Low</option>
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="rating-desc">Rating: High to Low</option>
+                        <option value="year-desc">Year: Newest First</option>
+                        <option value="name-asc">Name: A-Z</option>
+                    </select>
+                </div>
+            </div>
+            <div class="inventory-grid" id="vehicleGrid"></div>
+        </main>
+    </div>
+
+    <script>
+        const vehicles=[{name:"Grotti Turismo Omaggio",price:"$425,833",priceNum:425833,year:2022,mileage:"4,954",rating:782,horsepower:645,topSpeed:165,engine:"V8",drivetrain:"RWD",weight:"1,315 kg",imported:true,image:"images/turismo-omaggio.png"},{name:"Bravado Banshee GTS",price:"$402,500",priceNum:402500,year:2022,mileage:"2,300",rating:735,horsepower:645,topSpeed:162,engine:"V10",drivetrain:"RWD",weight:"1,400 kg",imported:true,image:"images/banshee-gts.png"},{name:"Pegassi Infernus",price:"$401,400",priceNum:401400,year:2005,mileage:"14,642",rating:635,horsepower:674,topSpeed:162,engine:"V12",drivetrain:"AWD",weight:"1,200 kg",imported:true,image:"images/infernus.png"},{name:"Pegassi Tempesta Spyder",price:"$388,312",priceNum:388312,year:2020,mileage:"9,170",rating:682,horsepower:861,topSpeed:170,engine:"V10",drivetrain:"RWD",weight:"1,520 kg",imported:true,image:"images/tempesta-spyder.png"},{name:"Grotti Itali GTO",price:"$366,465",priceNum:366465,year:2019,mileage:"8,200",rating:715,horsepower:612,topSpeed:168,engine:"V8",drivetrain:"RWD",weight:"1,450 kg",imported:true,image:"images/itali-gto.png"},{name:"Obey 10F Widebody",price:"$363,593",priceNum:363593,year:2021,mileage:"5,100",rating:698,horsepower:591,topSpeed:165,engine:"V8",drivetrain:"RWD",weight:"1,380 kg",imported:true,image:"images/10f-widebody.png"},{name:"Pegassi Zorrusso",price:"$362,250",priceNum:362250,year:2019,mileage:"7,800",rating:728,horsepower:789,topSpeed:169,engine:"V10",drivetrain:"RWD",weight:"1,350 kg",imported:true,image:"images/zorrusso.png"},{name:"Lampadati Corsita",price:"$352,100",priceNum:352100,year:2021,mileage:"6,500",rating:705,horsepower:670,topSpeed:166,engine:"V8",drivetrain:"RWD",weight:"1,420 kg",imported:true,image:"images/corsita.png"},{name:"Pegassi Reaper",price:"$345,000",priceNum:345000,year:2016,mileage:"18,200",rating:685,horsepower:650,topSpeed:163,engine:"V8",drivetrain:"RWD",weight:"1,300 kg",imported:true,image:"images/reaper.png"},{name:"Bravado Banshee 900R",price:"$330,093",priceNum:330093,year:2015,mileage:"22,100",rating:712,horsepower:900,topSpeed:171,engine:"V10",drivetrain:"RWD",weight:"1,250 kg",imported:true,image:"images/banshee-900r.png"},{name:"Pegassi Tempesta Fuoristrada",price:"$323,872",priceNum:323872,year:2021,mileage:"8,900",rating:675,horsepower:640,topSpeed:158,engine:"V8",drivetrain:"AWD",weight:"1,650 kg",imported:true,image:"images/tempesta-fuoristrada.png"},{name:"Benefactor Schlagen SP",price:"$305,965",priceNum:305965,year:2020,mileage:"11,200",rating:692,horsepower:577,topSpeed:164,engine:"V8",drivetrain:"RWD",weight:"1,480 kg",imported:true,image:"images/schlagen-sp.png"},{name:"Dinka Nexus RR",price:"$302,662",priceNum:302662,year:2021,mileage:"9,800",rating:688,horsepower:608,topSpeed:167,engine:"V6",drivetrain:"RWD",weight:"1,200 kg",imported:true,image:"images/nexus-rr.png"},{name:"Pegassi Tempesta",price:"$299,588",priceNum:299588,year:2016,mileage:"28,500",rating:665,horsepower:610,topSpeed:162,engine:"V10",drivetrain:"RWD",weight:"1,420 kg",imported:true,image:"images/tempesta.png"},{name:"Ubermacht Sentinel XS",price:"$292,500",priceNum:292500,year:2018,mileage:"15,300",rating:628,horsepower:450,topSpeed:155,engine:"V6",drivetrain:"RWD",weight:"1,550 kg",imported:true,image:"images/sentinel-xs.png"},{name:"Pegassi Vacca",price:"$290,625",priceNum:290625,year:2013,mileage:"35,200",rating:612,horsepower:540,topSpeed:158,engine:"V10",drivetrain:"RWD",weight:"1,380 kg",imported:true,image:"images/vacca.png"},{name:"Hijak Tachyon",price:"$245,625",priceNum:245625,year:2017,mileage:"19,800",rating:645,horsepower:520,topSpeed:160,engine:"V8",drivetrain:"RWD",weight:"1,320 kg",imported:true,image:"images/tachyon.png"},{name:"Obey 10F Cabrio",price:"$245,625",priceNum:245625,year:2015,mileage:"24,100",rating:635,horsepower:520,topSpeed:159,engine:"V8",drivetrain:"RWD",weight:"1,400 kg",imported:true,image:"images/10f-cabrio.png"},{name:"Benefactor Schlagen Roadster",price:"$225,301",priceNum:225301,year:2019,mileage:"16,500",rating:622,horsepower:503,topSpeed:157,engine:"V8",drivetrain:"RWD",weight:"1,450 kg",imported:true,image:"images/schlagen-roadster.png"},{name:"Dewbauchee Solace Vitesse",price:"$218,750",priceNum:218750,year:2014,mileage:"31,200",rating:598,horsepower:562,topSpeed:161,engine:"V8",drivetrain:"RWD",weight:"1,300 kg",imported:true,image:"images/solace-vitesse.png"},{name:"Pegassi Vacca (Low)",price:"$211,850",priceNum:211850,year:2013,mileage:"42,800",rating:588,horsepower:540,topSpeed:158,engine:"V10",drivetrain:"RWD",weight:"1,380 kg",imported:true,image:"images/vacca-low.png"},{name:"Benefactor Schlagen GT",price:"$211,850",priceNum:211850,year:2018,mileage:"21,600",rating:605,horsepower:503,topSpeed:156,engine:"V8",drivetrain:"RWD",weight:"1,500 kg",imported:true,image:"images/schlagen-gt.png"}];
+        const makes=[...new Set(vehicles.map(v=>v.name.split(' ')[0]))].sort();
+        const makeFilter=document.getElementById('makeFilter');
+        makes.forEach(make=>{const option=document.createElement('option');option.value=make;option.textContent=make;makeFilter.appendChild(option)});
+        let currentVehicles=[...vehicles];
+        function generateCards(vehicleList){const grid=document.getElementById('vehicleGrid');grid.innerHTML='';if(vehicleList.length===0){grid.innerHTML='<div class="no-results" style="grid-column:1/-1"><i class="fas fa-search"></i><h3>No vehicles found</h3><p>Try adjusting your filters</p></div>';return}vehicleList.forEach(vehicle=>{const card=document.createElement('div');card.className='vehicle-card';const encodedName=encodeURIComponent(vehicle.name);card.innerHTML=`<div class="card-image-container"><img src="${vehicle.image}" alt="${vehicle.name}" onerror="this.style.display='none';this.parentElement.innerHTML+='<i class=\'fas fa-car\' style=\'font-size:4rem;color:var(--accent-gold);opacity:0.3\'></i>'"><div class="card-badge ${vehicle.imported?'badge-imported':'badge-local'}">${vehicle.imported?'Imported':'Local'}</div><div class="card-price">${vehicle.price}</div></div><div class="card-content"><div class="card-header"><h3 class="card-title">${vehicle.name}</h3><p class="card-subtitle">${vehicle.year} • ${vehicle.engine} • ${vehicle.mileage} miles</p></div><div class="card-stats"><div class="stat"><div class="stat-value">${vehicle.rating}</div><div class="stat-label">Rating</div></div><div class="stat"><div class="stat-value">${vehicle.horsepower}</div><div class="stat-label">Max HP</div></div><div class="stat"><div class="stat-value">${vehicle.topSpeed}</div><div class="stat-label">Top Speed</div></div></div><div class="card-details"><span class="detail-tag"><i class="fas fa-cog"></i> ${vehicle.drivetrain}</span><span class="detail-tag"><i class="fas fa-weight-hanging"></i> ${vehicle.weight}</span></div><div class="card-actions"><a href="appointments.html?car=${encodedName}" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Book Viewing</a><button class="btn btn-secondary" onclick="alert('Contact us for more details about the ${vehicle.name}')"><i class="fas fa-info-circle"></i> Details</button></div></div>`;grid.appendChild(card)});document.getElementById('resultsCount').textContent=vehicleList.length}
+        function applyFilters(){const searchTerm=document.getElementById('searchInput').value.toLowerCase();const selectedMake=document.getElementById('makeFilter').value;const selectedEngine=document.getElementById('engineFilter').value;const importStatus=document.getElementById('importFilter').value;currentVehicles=vehicles.filter(vehicle=>{const matchesSearch=vehicle.name.toLowerCase().includes(searchTerm);const matchesMake=!selectedMake||vehicle.name.startsWith(selectedMake);const matchesEngine=!selectedEngine||vehicle.engine===selectedEngine;const matchesImport=!importStatus||(importStatus==='imported'&&vehicle.imported)||(importStatus==='local'&&!vehicle.imported);return matchesSearch&&matchesMake&&matchesEngine&&matchesImport});applySort()}
+        function applySort(){const sortValue=document.getElementById('sortSelect').value;currentVehicles.sort((a,b)=>{switch(sortValue){case'price-desc':return b.priceNum-a.priceNum;case'price-asc':return a.priceNum-b.priceNum;case'rating-desc':return b.rating-a.rating;case'year-desc':return b.year-a.year;case'name-asc':return a.name.localeCompare(b.name);default:return 0}});generateCards(currentVehicles)}
+        function clearFilters(){document.getElementById('searchInput').value='';document.getElementById('makeFilter').value='';document.getElementById('engineFilter').value='';document.getElementById('importFilter').value='';document.getElementById('sortSelect').value='price-desc';currentVehicles=[...vehicles];applySort()}
+        document.getElementById('searchInput').addEventListener('input',applyFilters);document.getElementById('makeFilter').addEventListener('change',applyFilters);document.getElementById('engineFilter').addEventListener('change',applyFilters);document.getElementById('importFilter').addEventListener('change',applyFilters);document.getElementById('sortSelect').addEventListener('change',applySort);generateCards(vehicles);
+    </script>
+</body>
+</html>
