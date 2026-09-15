@@ -580,6 +580,13 @@
             color: var(--accent-gold);
         }
 
+        .no-results .reset-btn {
+            width: auto;
+            display: inline-flex;
+            margin-top: 1.5rem;
+            padding: 0.7rem 1.4rem;
+        }
+
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -716,7 +723,7 @@
         <!-- Content Area -->
         <main class="content">
             <div class="content-header">
-                <div class="results-count">Showing <span id="resultsCount">22</span> unique supercars</div>
+                <div class="results-count">Showing <span id="resultsCount">&hellip;</span> unique supercars</div>
                 <div class="sort-dropdown">
                     <span>Sort by:</span>
                     <select id="sortSelect">
@@ -737,383 +744,8 @@
     </div>
 
     <script>
-        // Vehicle data array
-        let vehicles = [
-            {
-                name: "Grotti Turismo Omaggio",
-                price: "$425,833",
-                priceNum: 425833,
-                year: "2022",
-                yearNum: 2022,
-                miles: "4,954",
-                rating: "782",
-                ratingNum: 782,
-                engine: "V8",
-                seats: "2",
-                status: "not-imported",
-                category: "super",
-                make: "grotti",
-                image: "turismo-omaggio.png",
-                stats: { hp: "541/645", speed: "153/165", rating: "782/922", accel: "68/90", grip: "85/94", platform: "73/87", braking: "79/87" }
-            },
-            {
-                name: "Bravado Banshee GTS",
-                price: "$402,500",
-                priceNum: 402500,
-                year: "2015",
-                yearNum: 2015,
-                miles: "9,653",
-                rating: "610",
-                ratingNum: 610,
-                engine: "V10",
-                seats: "2",
-                status: "not-imported",
-                category: "super",
-                make: "bravado",
-                image: "banshee-gts.png",
-                stats: { hp: "502/788", speed: "148/170", rating: "610/973", accel: "66/100", grip: "42/100", platform: "60/87", braking: "37/87" }
-            },
-            {
-                name: "Pegassi Infernus",
-                price: "$401,400",
-                priceNum: 401400,
-                year: "2005",
-                yearNum: 2005,
-                miles: "14,642",
-                rating: "635",
-                ratingNum: 635,
-                engine: "V12",
-                seats: "2",
-                status: "not-imported",
-                category: "super",
-                make: "pegassi",
-                image: "infernus.png",
-                stats: { hp: "547/674", speed: "148/162", rating: "635/908", accel: "67/90", grip: "58/91", platform: "60/87", braking: "30/87" }
-            },
-            {
-                name: "Pegassi Tempesta Spyder",
-                price: "$388,312",
-                priceNum: 388312,
-                year: "2020",
-                yearNum: 2020,
-                miles: "9,170",
-                rating: "682",
-                ratingNum: 682,
-                engine: "V10",
-                seats: "2",
-                status: "not-imported",
-                category: "super",
-                make: "pegassi",
-                image: "tempesta-spyder.png",
-                stats: { hp: "553/861", speed: "145/170", rating: "682/993", accel: "69/100", grip: "61/96", platform: "55/100", braking: "52/100" }
-            },
-            {
-                name: "Grotti Itali GTO",
-                price: "$366,465",
-                priceNum: 366465,
-                year: "2022",
-                yearNum: 2022,
-                miles: "8,168",
-                rating: "683",
-                ratingNum: 683,
-                engine: "V12",
-                seats: "2",
-                status: "not-imported",
-                category: "super",
-                make: "grotti",
-                image: "itali-gto.png",
-                stats: { hp: "576/650", speed: "157/162", rating: "683/908", accel: "83/90", grip: "46/91", platform: "67/87", braking: "37/87" }
-            },
-            {
-                name: "Obey 10F Widebody",
-                price: "$363,593",
-                priceNum: 363593,
-                year: "2018",
-                yearNum: 2018,
-                miles: "6,311",
-                rating: "685",
-                ratingNum: 685,
-                engine: "V10",
-                seats: "2",
-                status: "not-imported",
-                category: "sports",
-                make: "obey",
-                image: "10f-widebody.png",
-                stats: { hp: "514/642", speed: "148/163", rating: "685/908", accel: "65/90", grip: "70/91", platform: "70/87", braking: "50/87" }
-            },
-            {
-                name: "Pegassi Zorrusso",
-                price: "$362,250",
-                priceNum: 362250,
-                year: "2018",
-                yearNum: 2018,
-                miles: "4,914",
-                rating: "697",
-                ratingNum: 697,
-                engine: "V10",
-                seats: "2",
-                status: "not-imported",
-                category: "super",
-                make: "pegassi",
-                image: "zorrusso.png",
-                stats: { hp: "575/809", speed: "151/164", rating: "697/973", accel: "84/100", grip: "45/100", platform: "67/87", braking: "43/87" }
-            },
-            {
-                name: "Lampadati Corsita",
-                price: "$352,100",
-                priceNum: 352100,
-                year: "2023",
-                yearNum: 2023,
-                miles: "681",
-                rating: "642",
-                ratingNum: 642,
-                engine: "V6",
-                seats: "2",
-                status: "not-imported",
-                category: "sports",
-                make: "lampadati",
-                image: "corsita.png",
-                stats: { hp: "533/821", speed: "151/170", rating: "642/973", accel: "72/100", grip: "43/100", platform: "67/87", braking: "43/87" }
-            },
-            {
-                name: "Pegassi Reaper",
-                price: "$345,000",
-                priceNum: 345000,
-                year: "2016",
-                yearNum: 2016,
-                miles: "11,673",
-                rating: "594",
-                ratingNum: 594,
-                engine: "V10",
-                seats: "2",
-                status: "not-imported",
-                category: "super",
-                make: "pegassi",
-                image: "reaper.png",
-                stats: { hp: "468/662", speed: "144/162", rating: "594/966", accel: "73/100", grip: "32/100", platform: "57/87", braking: "33/87" }
-            },
-            {
-                name: "Bravado Banshee 900R",
-                price: "$330,093",
-                priceNum: 330093,
-                year: "1999",
-                yearNum: 1999,
-                miles: "10,344",
-                rating: "634",
-                ratingNum: 634,
-                engine: "V10",
-                seats: "2",
-                status: "not-imported",
-                category: "super",
-                make: "bravado",
-                image: "banshee-900r.png",
-                stats: { hp: "412/547", speed: "145/162", rating: "634/908", accel: "61/90", grip: "62/91", platform: "60/87", braking: "44/87" }
-            },
-            {
-                name: "Pegassi Tempesta Fuoristrada",
-                price: "$323,872",
-                priceNum: 323872,
-                year: "2024",
-                yearNum: 2024,
-                miles: "1,761",
-                rating: "668",
-                ratingNum: 668,
-                engine: "V10",
-                seats: "2",
-                status: "not-imported",
-                category: "super",
-                make: "pegassi",
-                image: "tempesta-fuoristrada.png",
-                stats: { hp: "563/891", speed: "144/170", rating: "668/993", accel: "67/100", grip: "60/96", platform: "47/100", braking: "53/100" }
-            },
-            {
-                name: "Benefactor Schlagen SP",
-                price: "$305,965",
-                priceNum: 305965,
-                year: "2019",
-                yearNum: 2019,
-                miles: "8,287",
-                rating: "580",
-                ratingNum: 580,
-                engine: "V8",
-                seats: "2",
-                status: "not-imported",
-                category: "sports",
-                make: "benefactor",
-                image: "schlagen-sp.png",
-                stats: { hp: "448/612", speed: "147/162", rating: "580/908", accel: "67/90", grip: "31/91", platform: "67/87", braking: "37/87" }
-            },
-            {
-                name: "Dinka Nexus RR",
-                price: "$302,662",
-                priceNum: 302662,
-                year: "2024",
-                yearNum: 2024,
-                miles: "3,154",
-                rating: "678",
-                ratingNum: 678,
-                engine: "V6",
-                seats: "2",
-                status: "not-imported",
-                category: "sports",
-                make: "dinka",
-                image: "nexus-rr.png",
-                stats: { hp: "528/915", speed: "140/170", rating: "678/993", accel: "60/100", grip: "66/96", platform: "80/100", braking: "53/100" }
-            },
-            {
-                name: "Pegassi Tempesta",
-                price: "$299,588",
-                priceNum: 299588,
-                year: "2017",
-                yearNum: 2017,
-                miles: "8,843",
-                rating: "682",
-                ratingNum: 682,
-                engine: "V10",
-                seats: "2",
-                status: "not-imported",
-                category: "super",
-                make: "pegassi",
-                image: "tempesta.png",
-                stats: { hp: "553/861", speed: "145/170", rating: "682/993", accel: "69/100", grip: "61/96", platform: "55/100", braking: "52/100" }
-            },
-            {
-                name: "Ubermacht Sentinel XS",
-                price: "$292,500",
-                priceNum: 292500,
-                year: "2018",
-                yearNum: 2018,
-                miles: "11,921",
-                rating: "489",
-                ratingNum: 489,
-                engine: "V6",
-                seats: "2",
-                status: "not-imported",
-                category: "sports",
-                make: "ubermacht",
-                image: "sentinel-xs.png",
-                stats: { hp: "319/554", speed: "131/161", rating: "489/908", accel: "40/90", grip: "48/91", platform: "53/87", braking: "30/87" }
-            },
-            {
-                name: "Pegassi Vacca",
-                price: "$290,625",
-                priceNum: 290625,
-                year: "2012",
-                yearNum: 2012,
-                miles: "8,543",
-                rating: "647",
-                ratingNum: 647,
-                engine: "V10",
-                seats: "2",
-                status: "not-imported",
-                category: "super",
-                make: "pegassi",
-                image: "vacca.png",
-                stats: { hp: "568/709", speed: "147/162", rating: "647/872", accel: "77/100", grip: "36/53", platform: "70/87", braking: "37/87" }
-            },
-            {
-                name: "Hijak Tachyon",
-                price: "$245,625",
-                priceNum: 245625,
-                year: "1993",
-                yearNum: 1993,
-                miles: "9,654",
-                rating: "579",
-                ratingNum: 579,
-                engine: "V6",
-                seats: "2",
-                status: "not-imported",
-                category: "sports",
-                make: "hijak",
-                image: "tachyon.png",
-                stats: { hp: "561/810", speed: "152/170", rating: "579/1000", accel: "72/100", grip: "15/100", platform: "52/100", braking: "41/100" }
-            },
-            {
-                name: "Obey 10F Cabrio",
-                price: "$245,625",
-                priceNum: 245625,
-                year: "2022",
-                yearNum: 2022,
-                miles: "1,234",
-                rating: "647",
-                ratingNum: 647,
-                engine: "V6",
-                seats: "2",
-                status: "not-imported",
-                category: "sports",
-                make: "obey",
-                image: "10f-cabrio.png",
-                stats: { hp: "568/709", speed: "147/162", rating: "647/948", accel: "77/100", grip: "36/91", platform: "70/87", braking: "37/87" }
-            },
-            {
-                name: "Benefactor Schlagen Roadster",
-                price: "$225,301",
-                priceNum: 225301,
-                year: "2019",
-                yearNum: 2019,
-                miles: "7,892",
-                rating: "556",
-                ratingNum: 556,
-                engine: "V8",
-                seats: "2",
-                status: "not-imported",
-                category: "sports",
-                make: "benefactor",
-                image: "schlagen-roadster.png",
-                stats: { hp: "449/814", speed: "145/170", rating: "556/1000", accel: "63/100", grip: "31/100", platform: "66/100", braking: "30/100" }
-            },
-            {
-                name: "Dewbauchee Solace Vitesse",
-                price: "$218,750",
-                priceNum: 218750,
-                year: "2017",
-                yearNum: 2017,
-                miles: "12,456",
-                rating: "608",
-                ratingNum: 608,
-                engine: "V8",
-                seats: "2",
-                status: "not-imported",
-                category: "sports",
-                make: "dewbauchee",
-                image: "solace-vitesse.png",
-                stats: { hp: "449/814", speed: "145/170", rating: "608/1000", accel: "63/100", grip: "31/100", platform: "66/100", braking: "30/100" }
-            },
-            {
-                name: "Pegassi Vacca",
-                price: "$211,850",
-                priceNum: 211850,
-                year: "2012",
-                yearNum: 2012,
-                miles: "8,543",
-                rating: "608",
-                ratingNum: 608,
-                engine: "V10",
-                seats: "2",
-                status: "not-imported",
-                category: "super",
-                make: "pegassi",
-                image: "vacca-low.png",
-                stats: { hp: "534/656", speed: "148/163", rating: "608/911", accel: "65/90", grip: "34/91", platform: "60/87", braking: "50/87" }
-            },
-            {
-                name: "Benefactor Schlagen GT",
-                price: "$211,850",
-                priceNum: 211850,
-                year: "2019",
-                yearNum: 2019,
-                miles: "7,892",
-                rating: "668",
-                ratingNum: 668,
-                engine: "V8",
-                seats: "2",
-                status: "not-imported",
-                category: "sports",
-                make: "benefactor",
-                image: "schlagen-gt.png",
-                stats: { hp: "627/662", speed: "159/163", rating: "668/915", accel: "83/90", grip: "35/91", platform: "65/87", braking: "23/87" }
-            }
-        ];
+        // Inventory is loaded from the Netlify database through /api/vehicles.
+        let vehicles = [];
 
         let filteredVehicles = [...vehicles];
         let currentSort = 'price-desc';
@@ -1174,7 +806,7 @@
                                 <img src="images/${vehicle.image}" alt="${vehicle.name}" class="card-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div class="car-placeholder" style="display: none;"><i class="fas fa-car"></i></div>
                                 <div class="price-badge">${vehicle.price}</div>
-                                <div class="import-status ${vehicle.status}">Not Yet Imported</div>
+                                <div class="import-status ${vehicle.status}">${vehicle.status === 'imported' ? 'Imported' : 'Not Yet Imported'}</div>
                             </div>
                             <div class="card-content">
                                 <div class="card-header">
@@ -1336,8 +968,45 @@
             cb.addEventListener('change', applyFilters);
         });
 
+        // Render a full-grid message (loading / error) in place of the cards.
+        function showGridMessage(icon, title, message, actionHtml = '') {
+            document.getElementById('vehicleGrid').innerHTML = `
+                <div class="no-results">
+                    <i class="fas ${icon}"></i>
+                    <h3>${title}</h3>
+                    <p>${message}</p>
+                    ${actionHtml}
+                </div>
+            `;
+        }
+
+        // Load the inventory from the database, then apply the default filters and sort.
+        async function loadVehicles() {
+            showGridMessage('fa-spinner fa-spin', 'Loading inventory', 'Pulling the latest vehicles&hellip;');
+
+            try {
+                const response = await fetch('/api/vehicles', { headers: { accept: 'application/json' } });
+                if (!response.ok) throw new Error(`Inventory request failed (${response.status})`);
+
+                const data = await response.json();
+                vehicles = Array.isArray(data.vehicles) ? data.vehicles : [];
+                applyFilters();
+            } catch (error) {
+                console.error('Could not load inventory:', error);
+                vehicles = [];
+                filteredVehicles = [];
+                document.getElementById('resultsCount').textContent = '0';
+                showGridMessage(
+                    'fa-triangle-exclamation',
+                    'Inventory unavailable',
+                    'We could not reach the inventory right now. Please try again in a moment.',
+                    '<button class="reset-btn" onclick="loadVehicles()"><i class="fas fa-rotate-right"></i> Retry</button>'
+                );
+            }
+        }
+
         // Initialize
-        generateCards(vehicles);
+        loadVehicles();
     </script>
 </body>
 </html>
