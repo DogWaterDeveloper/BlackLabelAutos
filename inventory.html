@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -587,6 +588,13 @@
             padding: 0.7rem 1.4rem;
         }
 
+        .no-results .reset-btn {
+            width: auto;
+            display: inline-flex;
+            margin-top: 1.5rem;
+            padding: 0.7rem 1.4rem;
+        }
+
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -645,19 +653,19 @@
 <body>
     <!-- Navigation -->
     <nav>
-        <a href="index.html" class="nav-logo">
+        <a class='nav-logo' href='/'>
             <div class="nav-logo-icon">
                 <i class="fas fa-crown"></i>
             </div>
             <div class="nav-logo-text">BLACK <span>LABEL</span></div>
         </a>
         <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="inventory.html">Inventory</a></li>
-            <li><a href="index.html#about">About</a></li>
-            <li><a href="index.html#contact">Contact</a></li>
+            <li><a href='/'>Home</a></li>
+            <li><a href='/inventory'>Inventory</a></li>
+            <li><a href='/#about'>About</a></li>
+            <li><a href='/#contact'>Contact</a></li>
         </ul>
-        <a href="appointments.html" class="nav-cta">Book Now</a>
+        <a class='nav-cta' href='/appointments'>Book Now</a>
     </nav>
 
     <!-- Main Container -->
@@ -724,6 +732,7 @@
         <main class="content">
             <div class="content-header">
                 <div class="results-count">Showing <span id="resultsCount">&hellip;</span> unique supercars</div>
+                <div class="results-count">Showing <span id="resultsCount">&hellip;</span> unique supercars</div>
                 <div class="sort-dropdown">
                     <span>Sort by:</span>
                     <select id="sortSelect">
@@ -744,6 +753,8 @@
     </div>
 
     <script>
+        // Inventory is loaded from the Netlify database through /api/vehicles.
+        let vehicles = [];
         // Inventory is loaded from the Netlify database through /api/vehicles.
         let vehicles = [];
 
@@ -806,6 +817,7 @@
                                 <img src="images/${vehicle.image}" alt="${vehicle.name}" class="card-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div class="car-placeholder" style="display: none;"><i class="fas fa-car"></i></div>
                                 <div class="price-badge">${vehicle.price}</div>
+                                <div class="import-status ${vehicle.status}">${vehicle.status === 'imported' ? 'Imported' : 'Not Yet Imported'}</div>
                                 <div class="import-status ${vehicle.status}">${vehicle.status === 'imported' ? 'Imported' : 'Not Yet Imported'}</div>
                             </div>
                             <div class="card-content">
@@ -968,6 +980,45 @@
             cb.addEventListener('change', applyFilters);
         });
 
+        // Render a full-grid message (loading / error) in place of the cards.
+        function showGridMessage(icon, title, message, actionHtml = '') {
+            document.getElementById('vehicleGrid').innerHTML = `
+                <div class="no-results">
+                    <i class="fas ${icon}"></i>
+                    <h3>${title}</h3>
+                    <p>${message}</p>
+                    ${actionHtml}
+                </div>
+            `;
+        }
+
+        // Load the inventory from the database, then apply the default filters and sort.
+        async function loadVehicles() {
+            showGridMessage('fa-spinner fa-spin', 'Loading inventory', 'Pulling the latest vehicles&hellip;');
+
+            try {
+                const response = await fetch('/api/vehicles', { headers: { accept: 'application/json' } });
+                if (!response.ok) throw new Error(`Inventory request failed (${response.status})`);
+
+                const data = await response.json();
+                vehicles = Array.isArray(data.vehicles) ? data.vehicles : [];
+                applyFilters();
+            } catch (error) {
+                console.error('Could not load inventory:', error);
+                vehicles = [];
+                filteredVehicles = [];
+                document.getElementById('resultsCount').textContent = '0';
+                showGridMessage(
+                    'fa-triangle-exclamation',
+                    'Inventory unavailable',
+                    'We could not reach the inventory right now. Please try again in a moment.',
+                    '<button class="reset-btn" onclick="loadVehicles()"><i class="fas fa-rotate-right"></i> Retry</button>'
+                );
+            }
+        }
+
+        // Initialize
+        loadVehicles();
         // Render a full-grid message (loading / error) in place of the cards.
         function showGridMessage(icon, title, message, actionHtml = '') {
             document.getElementById('vehicleGrid').innerHTML = `
