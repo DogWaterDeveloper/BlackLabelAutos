@@ -40,6 +40,126 @@
             overflow-x: hidden;
         }
 
+        /* Proof of Concept Overlay */
+        .poc-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 17, 23, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .poc-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .poc-modal {
+            background: var(--bg-secondary);
+            border: 2px solid var(--accent-gold);
+            border-radius: 16px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 0 40px rgba(201, 162, 39, 0.2);
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .poc-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: var(--bg-primary);
+        }
+
+        .poc-modal h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--accent-gold);
+        }
+
+        .poc-modal p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .poc-contact {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .poc-contact i {
+            color: var(--accent-gold);
+            margin-right: 0.5rem;
+        }
+
+        .poc-contact a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .poc-checkbox {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            padding: 1rem;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .poc-checkbox:hover {
+            background: rgba(201, 162, 39, 0.1);
+        }
+
+        .poc-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent-gold);
+            cursor: pointer;
+        }
+
+        .poc-checkbox span {
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
         nav {
             position: fixed;
             top: 0;
@@ -646,6 +766,14 @@
                 display: none;
             }
 
+            .poc-modal {
+                padding: 2rem;
+            }
+
+            .poc-modal h2 {
+                font-size: 1.4rem;
+            }
+
             .hero h1 {
                 font-size: 2rem;
             }
@@ -661,8 +789,28 @@
     </style>
 </head>
 <body>
+    <!-- Proof of Concept Overlay -->
+    <div class="poc-overlay" id="pocOverlay">
+        <div class="poc-modal">
+            <div class="poc-icon">
+                <i class="fas fa-flask"></i>
+            </div>
+            <h2>Proof of Concept</h2>
+            <p>This website is a <strong>proof of concept / proposal</strong> for the dealership business <strong>"Black Label Autos"</strong> created by <strong>Von Hayes</strong>.</p>
+            <p>If you find any bugs, or have any ideas that could make this concept even better, please feel free to reach out!</p>
+            <div class="poc-contact">
+                <i class="fas fa-phone"></i>
+                <a href="tel:4242120069">(424) 212-0069</a>
+            </div>
+            <label class="poc-checkbox">
+                <input type="checkbox" id="pocCheckbox">
+                <span>I understand and want to explore the site</span>
+            </label>
+        </div>
+    </div>
+
     <!-- Navigation -->
-    <nav>
+    <nav style="background: rgba(13, 17, 23, 0.95);">
         <a href="#" class="nav-logo">
             <div class="nav-logo-icon">
                 <i class="fas fa-crown"></i>
@@ -674,7 +822,7 @@
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
-        <a href="inventory.html" class="nav-cta">View Stock</a>
+        <a class="nav-cta" href="/inventory">View Stock</a>
     </nav>
 
     <!-- Hero Section -->
@@ -685,25 +833,10 @@
                 Los Santos' Premier Import Dealership
             </div>
             <h1>DRIVE THE<br>EXTRAORDINARY</h1>
-            <p class="hero-subtitle">Premium supercar imports direct from Europe and Japan. Hand-selected inventory, white-glove service, and performance tuning that pushes boundaries.</p>
-
-            <div class="hero-stats">
-                <div class="hero-stat">
-                    <div class="hero-stat-value">22+</div>
-                    <div class="hero-stat-label">Supercars</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-value">$6.8M</div>
-                    <div class="hero-stat-label">Inventory</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-value">100%</div>
-                    <div class="hero-stat-label">Verified</div>
-                </div>
-            </div>
+            <p class="hero-subtitle">Premium imports, Hand-selected inventory, white-glove service, and performance tuning that pushes boundaries.</p>
 
             <div class="hero-buttons">
-                <a href="inventory.html" class="btn btn-primary">
+                <a class="btn btn-primary" href="/inventory">
                     <i class="fas fa-car"></i> Browse Inventory
                 </a>
                 <a href="#contact" class="btn btn-secondary">
@@ -732,7 +865,7 @@
                     <i class="fas fa-globe-americas"></i>
                 </div>
                 <h3>Direct Imports</h3>
-                <p>Exclusive access to JDM and European supercars unavailable elsewhere in Los Santos. Direct relationships with overseas suppliers ensure authenticity.</p>
+                <p>The goal is to bring you exclusive access to tuner vehicles unavailable elsewhere in Los Santos.</p>
             </div>
 
             <div class="feature-card">
@@ -740,7 +873,7 @@
                     <i class="fas fa-wrench"></i>
                 </div>
                 <h3>Performance Tuning</h3>
-                <p>In collaboration with "Hayes" our in-house specialists maximize your vehicle's potential. From mild upgrades to full track builds.</p>
+                <p>We hope to eventually bring you perfectly tuned vehicles straight off the showroom floor</p>
             </div>
 
             <div class="feature-card">
@@ -758,6 +891,13 @@
                 <h3>White Glove Service</h3>
                 <p>Concierge-level customer care from browse to delivery. Financing options available for qualified buyers.</p>
             </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+                <h3>Exclusive Booking Tool</h3>
+                <p>We are San Andreas' only dealership with direct-to-cell booking—lock in your appointment on our website, and get a confirmation text sent straight to your phone.</p>
+            </div>        
         </div>
     </section>
 
@@ -766,7 +906,7 @@
         <div class="section-header">
             <h2>Featured <span>Inventory</span></h2>
             <div class="section-line"></div>
-            <p>A glimpse of our current supercar collection.</p>
+            <p>A glimpse of our current collection.</p>
         </div>
 
         <div class="preview-grid">
@@ -847,7 +987,7 @@
         </div>
 
         <div class="view-all-btn">
-            <a href="inventory.html" class="btn btn-primary">
+            <a class="btn btn-primary" href="/inventory">
                 <i class="fas fa-th"></i> View Full Inventory
             </a>
         </div>
@@ -859,7 +999,7 @@
             <h2>Ready to Find Your Dream Car?</h2>
             <p>Our specialists are standing by to help you find the perfect vehicle.</p>
             <div class="hero-buttons">
-                <a href="appointments.html" class="btn btn-primary">
+                <a class="btn btn-primary" href="/appointments">
                     <i class="fas fa-calendar-check"></i> Book Now
                 </a>
             </div>
@@ -876,14 +1016,14 @@
                     </div>
                     <div class="footer-brand-text">BLACK <span>LABEL</span></div>
                 </div>
-                <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7;">Los Santos' premier destination for high-performance imports and luxury supercars.</p>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7;">Los Santos' premier destination for high-performance imports and luxury vehicles.</p>
             </div>
 
             <div class="footer-section">
                 <h4>Quick Links</h4>
                 <ul>
                     <li><a href="#features">Services</a></li>
-                    <li><a href="inventory.html">Inventory</a></li>
+                    <li><a href="/inventory">Inventory</a></li>
                     <li><a href="#about">About Us</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
@@ -893,27 +1033,45 @@
                 <h4>Contact</h4>
                 <ul>
                     <li><i class="fas fa-map-marker-alt" style="color: var(--accent-gold); margin-right: 0.5rem;"></i> Los Santos, San Andreas</li>
-                    <li><i class="fas fa-phone" style="color: var(--accent-gold); margin-right: 0.5rem;"></i> (555) 123-4567</li>
-                    <li><i class="fas fa-envelope" style="color: var(--accent-gold); margin-right: 0.5rem;"></i> sales@blacklabelautos.ls</li>
+                    <li><i class="fas fa-phone" style="color: var(--accent-gold); margin-right: 0.5rem;"></i>(424) 212-0069</li>
                 </ul>
             </div>
 
             <div class="footer-section">
                 <h4>Hours</h4>
                 <ul>
-                    <li>Mon - Sat: 10AM - 8PM</li>
-                    <li>Sunday: By Appointment</li>
-                    <li style="margin-top: 1rem; color: var(--accent-gold);">Import Orders: 6-8 weeks</li>
+                    <li>NO SET HOURS</li>
+                    <li style="margin-top: 1rem; color: var(--accent-gold);">WE HOPE TO HAVE EMPLOYEES AVAILABLE AT ALL TIMES</li>
                 </ul>
             </div>
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; 2024 Black Label Autos. All rights reserved. | Not affiliated with Rockstar Games.</p>
+            <p>© 2024 Black Label Autos. All rights reserved. | Not affiliated with Rockstar Games.</p>
         </div>
     </footer>
 
     <script>
+        // Proof of Concept Overlay
+        const pocOverlay = document.getElementById('pocOverlay');
+        const pocCheckbox = document.getElementById('pocCheckbox');
+
+        pocCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                // Fade out overlay
+                pocOverlay.classList.add('hidden');
+                
+                // Optional: Store in localStorage so it doesn't show again
+                localStorage.setItem('pocAcknowledged', 'true');
+            }
+        });
+
+        // Check if already acknowledged (optional - remove if you want it every time)
+        if (localStorage.getItem('pocAcknowledged') === 'true') {
+            pocOverlay.classList.add('hidden');
+        }
+
+        // Navbar scroll effect
         window.addEventListener('scroll', () => {
             const nav = document.querySelector('nav');
             if (window.scrollY > 100) {
