@@ -16,21 +16,21 @@
             --text-primary: #f0f6fc;
             --text-secondary: #8b949e;
             --text-muted: #6e7681;
-            --border: #30363d
+            --border: #30363d;
         }
 
         * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Inter',sans-serif;
+            font-family: 'Inter', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
-            min-height: 100vh
+            min-height: 100vh;
         }
 
         nav {
@@ -38,81 +38,81 @@
             top: 0;
             width: 100%;
             padding: 1.2rem 5%;
-            background: rgba(13,17,23,0.95);
+            background: rgba(13, 17, 23, 0.95);
             backdrop-filter: blur(20px);
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(201,162,39,0.2)
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
         }
 
         .nav-logo {
             display: flex;
             align-items: center;
             gap: 0.8rem;
-            text-decoration: none
+            text-decoration: none;
         }
 
         .nav-logo-icon {
             width: 42px;
             height: 42px;
-            background: linear-gradient(135deg,var(--accent-gold) 0%,var(--accent-gold-light) 100%);
+            background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.3rem;
-            color: var(--bg-primary)
+            color: var(--bg-primary);
         }
 
         .nav-logo-text {
-            font-family: 'Orbitron',sans-serif;
+            font-family: 'Orbitron', sans-serif;
             font-size: 1.3rem;
             font-weight: 700;
             color: var(--text-primary);
-            letter-spacing: 1px
+            letter-spacing: 1px;
         }
 
-            .nav-logo-text span {
-                color: var(--accent-gold)
-            }
+        .nav-logo-text span {
+            color: var(--accent-gold);
+        }
 
         .nav-links {
             display: flex;
             gap: 2.5rem;
-            list-style: none
+            list-style: none;
         }
 
-            .nav-links a {
-                color: var(--text-secondary);
-                text-decoration: none;
-                font-weight: 500;
-                font-size: 0.95rem;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                position: relative;
-                transition: color 0.3s
-            }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            transition: color 0.3s;
+        }
 
-                .nav-links a::after {
-                    content: '';
-                    position: absolute;
-                    bottom: -5px;
-                    left: 0;
-                    width: 0;
-                    height: 2px;
-                    background: var(--accent-gold);
-                    transition: width 0.3s
-                }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: width 0.3s;
+        }
 
-                .nav-links a:hover {
-                    color: var(--accent-gold)
-                }
+        .nav-links a:hover {
+            color: var(--accent-gold);
+        }
 
-                    .nav-links a:hover::after {
-                        width: 100%
-                    }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
 
         .nav-cta {
             padding: 0.7rem 1.5rem;
@@ -120,50 +120,50 @@
             color: var(--bg-primary);
             border: none;
             border-radius: 6px;
-            font-family: 'Inter',sans-serif;
+            font-family: 'Inter', sans-serif;
             font-weight: 700;
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
             transition: all 0.3s;
-            text-decoration: none
+            text-decoration: none;
         }
 
-            .nav-cta:hover {
-                background: var(--accent-gold-light);
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(201,162,39,0.3)
-            }
+        .nav-cta:hover {
+            background: var(--accent-gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(201, 162, 39, 0.3);
+        }
 
         .page-hero {
             padding: 10rem 5% 4rem;
             text-align: center;
-            background: radial-gradient(ellipse at 50% 50%,rgba(201,162,39,0.08) 0%,transparent 50%),var(--bg-primary);
-            border-bottom: 1px solid var(--border)
+            background: radial-gradient(ellipse at 50% 50%, rgba(201, 162, 39, 0.08) 0%, transparent 50%), var(--bg-primary);
+            border-bottom: 1px solid var(--border);
         }
 
-            .page-hero h1 {
-                font-family: 'Orbitron',sans-serif;
-                font-size: clamp(2rem,5vw,3.5rem);
-                margin-bottom: 1rem;
-                background: linear-gradient(135deg,var(--text-primary) 0%,var(--accent-gold) 50%,var(--accent-gold-light) 100%);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text
-            }
+        .page-hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-gold) 50%, var(--accent-gold-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-            .page-hero p {
-                color: var(--text-secondary);
-                font-size: 1.1rem;
-                max-width: 600px;
-                margin: 0 auto
-            }
+        .page-hero p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
 
         .appointment-section {
             padding: 4rem 5%;
             background: var(--bg-secondary);
-            min-height: 60vh
+            min-height: 60vh;
         }
 
         .form-container {
@@ -174,140 +174,145 @@
             border-radius: 16px;
             padding: 3rem;
             position: relative;
-            overflow: hidden
+            overflow: hidden;
         }
 
-            .form-container::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 3px;
-                background: linear-gradient(90deg,transparent,var(--accent-gold),transparent)
-            }
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+        }
 
         .form-header {
             text-align: center;
-            margin-bottom: 2.5rem
+            margin-bottom: 2.5rem;
         }
 
-            .form-header i {
-                font-size: 3rem;
-                color: var(--accent-gold);
-                margin-bottom: 1rem
-            }
+        .form-header i {
+            font-size: 3rem;
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+        }
 
-            .form-header h2 {
-                font-family: 'Orbitron',sans-serif;
-                font-size: 1.8rem;
-                margin-bottom: 0.5rem
-            }
+        .form-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
 
-            .form-header p {
-                color: var(--text-secondary);
-                font-size: 0.95rem
-            }
+        .form-header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
 
         .selected-car-banner {
-            background: rgba(201,162,39,0.1);
+            background: rgba(201, 162, 39, 0.1);
             border: 1px solid var(--accent-gold);
             border-radius: 8px;
             padding: 1rem 1.5rem;
             margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
-            gap: 1rem
+            gap: 1rem;
         }
 
-            .selected-car-banner i {
-                color: var(--accent-gold);
-                font-size: 1.5rem
-            }
+        .selected-car-banner i {
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+        }
 
-            .selected-car-banner .car-name {
-                font-weight: 600;
-                color: var(--accent-gold)
-            }
+        .selected-car-banner .car-name {
+            font-weight: 600;
+            color: var(--accent-gold);
+        }
 
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
-            margin-bottom: 1.5rem
+            margin-bottom: 1.5rem;
         }
 
-        @media(max-width:600px) {
+        @media (max-width: 600px) {
             .form-grid {
-                grid-template-columns: 1fr
+                grid-template-columns: 1fr;
             }
         }
 
         .form-group {
             display: flex;
-            flex-direction: column
+            flex-direction: column;
         }
 
-            .form-group.full-width {
-                grid-column: 1/-1
-            }
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
 
-            .form-group label {
-                font-size: 0.85rem;
-                font-weight: 600;
-                color: var(--text-secondary);
-                margin-bottom: 0.5rem;
-                text-transform: uppercase;
-                letter-spacing: 1px
-            }
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-                .form-group label span {
-                    color: var(--accent-gold)
-                }
+        .form-group label span {
+            color: var(--accent-gold);
+        }
 
-            .form-group input, .form-group select, .form-group textarea {
-                padding: 1rem 1.2rem;
-                background: var(--bg-primary);
-                border: 1px solid var(--border);
-                border-radius: 8px;
-                color: var(--text-primary);
-                font-size: 1rem;
-                font-family: 'Inter',sans-serif;
-                transition: all 0.3s
-            }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 1rem 1.2rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+        }
 
-                .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-                    outline: none;
-                    border-color: var(--accent-gold);
-                    box-shadow: 0 0 0 3px rgba(201,162,39,0.1)
-                }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.1);
+        }
 
-                .form-group input::placeholder, .form-group textarea::placeholder {
-                    color: var(--text-muted)
-                }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--text-muted);
+        }
 
-            .form-group select {
-                cursor: pointer;
-                appearance: none;
-                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238b949e'%3E%3Cpath d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-                background-repeat: no-repeat;
-                background-position: right 1rem center;
-                padding-right: 3rem
-            }
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238b949e'%3E%3Cpath d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 3rem;
+        }
 
-                .form-group select option {
-                    background: var(--bg-tertiary);
-                    color: var(--text-primary)
-                }
+        .form-group select option {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
 
         .submit-btn {
             width: 100%;
             padding: 1.2rem;
-            background: linear-gradient(135deg,var(--accent-gold) 0%,var(--accent-gold-light) 100%);
+            background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%);
             color: var(--bg-primary);
             border: none;
             border-radius: 8px;
-            font-family: 'Orbitron',sans-serif;
+            font-family: 'Orbitron', sans-serif;
             font-size: 1rem;
             font-weight: 700;
             text-transform: uppercase;
@@ -318,19 +323,19 @@
             align-items: center;
             justify-content: center;
             gap: 0.8rem;
-            margin-top: 1rem
+            margin-top: 1rem;
         }
 
-            .submit-btn:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 15px 40px rgba(201,162,39,0.4)
-            }
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(201, 162, 39, 0.4);
+        }
 
-            .submit-btn:disabled {
-                opacity: 0.6;
-                cursor: not-allowed;
-                transform: none
-            }
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
 
         .modal-overlay {
             display: none;
@@ -339,17 +344,17 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
             z-index: 2000;
             align-items: center;
             justify-content: center;
-            padding: 2rem
+            padding: 2rem;
         }
 
-            .modal-overlay.active {
-                display: flex
-            }
+        .modal-overlay.active {
+            display: flex;
+        }
 
         .modal-content {
             background: var(--bg-secondary);
@@ -359,36 +364,35 @@
             text-align: center;
             max-width: 500px;
             width: 100%;
-            animation: modalSlide 0.3s ease
+            animation: modalSlide 0.3s ease;
         }
 
         @keyframes modalSlide {
             from {
                 opacity: 0;
-                transform: translateY(-30px)
+                transform: translateY(-30px);
             }
-
             to {
                 opacity: 1;
-                transform: translateY(0)
+                transform: translateY(0);
             }
         }
 
         .modal-content i {
             font-size: 4rem;
             color: var(--accent-gold);
-            margin-bottom: 1.5rem
+            margin-bottom: 1.5rem;
         }
 
         .modal-content h2 {
-            font-family: 'Orbitron',sans-serif;
+            font-family: 'Orbitron', sans-serif;
             font-size: 1.8rem;
-            margin-bottom: 1rem
+            margin-bottom: 1rem;
         }
 
         .modal-content p {
             color: var(--text-secondary);
-            margin-bottom: 2rem
+            margin-bottom: 2rem;
         }
 
         .modal-btn {
@@ -397,23 +401,23 @@
             color: var(--bg-primary);
             border: none;
             border-radius: 8px;
-            font-family: 'Inter',sans-serif;
+            font-family: 'Inter', sans-serif;
             font-weight: 700;
             font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s
+            transition: all 0.3s;
         }
 
-            .modal-btn:hover {
-                background: var(--accent-gold-light);
-                transform: translateY(-2px)
-            }
+        .modal-btn:hover {
+            background: var(--accent-gold-light);
+            transform: translateY(-2px);
+        }
 
         footer {
             background: var(--bg-secondary);
             border-top: 1px solid var(--border);
             padding: 3rem 5% 2rem;
-            text-align: center
+            text-align: center;
         }
 
         .footer-brand {
@@ -421,7 +425,7 @@
             align-items: center;
             justify-content: center;
             gap: 0.8rem;
-            margin-bottom: 1rem
+            margin-bottom: 1rem;
         }
 
         .footer-brand-icon {
@@ -432,22 +436,22 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--bg-primary)
+            color: var(--bg-primary);
         }
 
         .footer-brand-text {
-            font-family: 'Orbitron',sans-serif;
+            font-family: 'Orbitron', sans-serif;
             font-size: 1.2rem;
-            font-weight: 700
+            font-weight: 700;
         }
 
-            .footer-brand-text span {
-                color: var(--accent-gold)
-            }
+        .footer-brand-text span {
+            color: var(--accent-gold);
+        }
 
         .footer-bottom {
             color: var(--text-muted);
-            font-size: 0.9rem
+            font-size: 0.9rem;
         }
 
         .spinner {
@@ -457,44 +461,43 @@
             border-top-color: transparent;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            display: none
+            display: none;
         }
 
         .submit-btn.loading .spinner {
-            display: block
+            display: block;
         }
 
         .submit-btn.loading .btn-text {
-            display: none
+            display: none;
         }
 
         @keyframes spin {
-            to {
-                transform: rotate(360deg)
-            }
+            to { transform: rotate(360deg); }
         }
 
         .change-car-link {
             margin-left: auto;
             color: var(--text-secondary);
             font-size: 0.85rem;
-            text-decoration: none
+            text-decoration: none;
         }
 
-            .change-car-link:hover {
-                color: var(--accent-gold)
-            }
+        .change-car-link:hover {
+            color: var(--accent-gold);
+        }
     </style>
 </head>
 <body>
     <nav>
         <a href="index.html" class="nav-logo">
-            <div class="nav-logo-icon"><i class="fas fa-crown"></i></div>
+            <div class="nav-logo-icon">
+                <i class="fas fa-crown"></i>
+            </div>
             <div class="nav-logo-text">BLACK <span>LABEL</span></div>
         </a>
         <ul class="nav-links">
             <li><a href="index.html#features">Services</a></li>
-            <li><a href="inventory.html">Inventory</a></li>
             <li><a href="index.html#about">About</a></li>
             <li><a href="index.html#contact">Contact</a></li>
         </ul>
@@ -514,38 +517,39 @@
                 <p>Fill out the form below and our team will confirm your appointment</p>
             </div>
 
-            <div class="selected-car-banner" id="selectedCarBanner" style="display:none">
+            <div class="selected-car-banner" id="selectedCarBanner" style="display: none;">
                 <i class="fas fa-car"></i>
                 <div>
-                    <div style="font-size:0.8rem;color:var(--text-secondary)">Selected Vehicle</div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">Selected Vehicle</div>
                     <div class="car-name" id="selectedCarName"></div>
                 </div>
                 <a href="inventory.html" class="change-car-link">Change Vehicle <i class="fas fa-arrow-right"></i></a>
             </div>
 
-            <form name="appointments" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-                <p style="display:none"><label>Don't fill this out: <input name="bot-field"></label></p>
-                <input type="hidden" name="form-name" value="appointments">
-
+            <form action="http://100.54.248.90:3000/send-notification" method="POST">
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Full Name <span>*</span></label>
                         <input type="text" name="name" placeholder="John Doe" required>
                     </div>
+
                     <div class="form-group">
                         <label>State ID # <span>*</span></label>
                         <input type="text" name="state_id" placeholder="12345" required>
                     </div>
+
                     <div class="form-group full-width">
                         <label>Phone Number <span>*</span></label>
                         <input type="tel" name="phone" placeholder="(555) 123-4567" required>
                     </div>
+
                     <div class="form-group full-width">
                         <label>Vehicle Interest <span>*</span></label>
                         <select name="car_interest" id="vehicleSelect" required>
                             <option value="" disabled selected>Select a vehicle...</option>
                         </select>
                     </div>
+
                     <div class="form-group">
                         <label>Financing Needed? <span>*</span></label>
                         <select name="financing" required>
@@ -554,10 +558,12 @@
                             <option value="No">No - Cash/Crypto ready</option>
                         </select>
                     </div>
+
                     <div class="form-group">
                         <label>Preferred Date/Time <span>*</span></label>
-                        <input type="datetime-local" name="appointment_time" required>
+                        <input type="datetime-local" name="appointment_time" id="appointmentTime" step="1800" required>
                     </div>
+
                     <div class="form-group full-width">
                         <label>Additional Requests</label>
                         <textarea name="notes" rows="4" placeholder="Any special requests or questions..."></textarea>
@@ -583,7 +589,9 @@
 
     <footer>
         <div class="footer-brand">
-            <div class="footer-brand-icon"><i class="fas fa-crown"></i></div>
+            <div class="footer-brand-icon">
+                <i class="fas fa-crown"></i>
+            </div>
             <div class="footer-brand-text">BLACK <span>LABEL</span> AUTOS</div>
         </div>
         <div class="footer-bottom">
@@ -592,24 +600,152 @@
     </footer>
 
     <script>
-        const vehicles=[{name:"Grotti Turismo Omaggio",price:"$425,833"},{name:"Bravado Banshee GTS",price:"$402,500"},{name:"Pegassi Infernus",price:"$401,400"},{name:"Pegassi Tempesta Spyder",price:"$388,312"},{name:"Grotti Itali GTO",price:"$366,465"},{name:"Obey 10F Widebody",price:"$363,593"},{name:"Pegassi Zorrusso",price:"$362,250"},{name:"Lampadati Corsita",price:"$352,100"},{name:"Pegassi Reaper",price:"$345,000"},{name:"Bravado Banshee 900R",price:"$330,093"},{name:"Pegassi Tempesta Fuoristrada",price:"$323,872"},{name:"Benefactor Schlagen SP",price:"$305,965"},{name:"Dinka Nexus RR",price:"$302,662"},{name:"Pegassi Tempesta",price:"$299,588"},{name:"Ubermacht Sentinel XS",price:"$292,500"},{name:"Pegassi Vacca",price:"$290,625"},{name:"Hijak Tachyon",price:"$245,625"},{name:"Obey 10F Cabrio",price:"$245,625"},{name:"Benefactor Schlagen Roadster",price:"$225,301"},{name:"Dewbauchee Solace Vitesse",price:"$218,750"},{name:"Pegassi Vacca (Low)",price:"$211,850"},{name:"Benefactor Schlagen GT",price:"$211,850"}];
-        const vehicleSelect=document.getElementById('vehicleSelect');
-        const selectedCarBanner=document.getElementById('selectedCarBanner');
-        const selectedCarName=document.getElementById('selectedCarName');
-        vehicles.forEach(vehicle=>{const option=document.createElement('option');option.value=vehicle.name;option.textContent=`${vehicle.name} - ${vehicle.price}`;vehicleSelect.appendChild(option)});
-        const otherOption=document.createElement('option');otherOption.value="Other/Undecided";otherOption.textContent="Other / Undecided - Show me options";vehicleSelect.appendChild(otherOption);
-        const urlParams=new URLSearchParams(window.location.search);
-        const preSelectedCar=urlParams.get('car');
-        if(preSelectedCar){const decodedCar=decodeURIComponent(preSelectedCar);const carExists=vehicles.some(v=>v.name===decodedCar);if(carExists){vehicleSelect.value=decodedCar;selectedCarName.textContent=decodedCar;selectedCarBanner.style.display='flex'}}
-        vehicleSelect.addEventListener('change',function(){if(this.value&&this.value!=="Other/Undecided"){selectedCarName.textContent=this.value;selectedCarBanner.style.display='flex'}else{selectedCarBanner.style.display='none'}});
-        const form=document.querySelector('form');
-        const submitBtn=document.querySelector('.submit-btn');
-        const modal=document.getElementById('successModal');
-        form.addEventListener('submit',async(e)=>{e.preventDefault();submitBtn.classList.add('loading');submitBtn.disabled=true;try{const formData=new FormData(form);const response=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(formData).toString()});if(response.ok){modal.classList.add('active');form.reset();selectedCarBanner.style.display='none'}else{alert('Something went wrong. Please try again.')}}catch(error){console.error('Error:',error);alert('Error submitting form. Please try again.')}finally{submitBtn.classList.remove('loading');submitBtn.disabled=false}});
-        function closeModal(){modal.classList.remove('active');window.location.href='index.html'}
-        modal.addEventListener('click',(e)=>{if(e.target===modal)closeModal()});
-        window.addEventListener('scroll',()=>{const nav=document.querySelector('nav');if(window.scrollY>100){nav.style.background='rgba(13,17,23,0.98)'}else{nav.style.background='rgba(13,17,23,0.95)'}});
-        const datetimeInput=document.querySelector('input[name="appointment_time"]');const now=new Date();now.setMinutes(now.getMinutes()-now.getTimezoneOffset());datetimeInput.min=now.toISOString().slice(0,16);
+        const vehicles = [
+            { name: "Grotti Turismo Omaggio", price: "$425,833" },
+            { name: "Bravado Banshee GTS", price: "$402,500" },
+            { name: "Pegassi Infernus", price: "$401,400" },
+            { name: "Pegassi Tempesta Spyder", price: "$388,312" },
+            { name: "Grotti Itali GTO", price: "$366,465" },
+            { name: "Obey 10F Widebody", price: "$363,593" },
+            { name: "Pegassi Zorrusso", price: "$362,250" },
+            { name: "Lampadati Corsita", price: "$352,100" },
+            { name: "Pegassi Reaper", price: "$345,000" },
+            { name: "Bravado Banshee 900R", price: "$330,093" },
+            { name: "Pegassi Tempesta Fuoristrada", price: "$323,872" },
+            { name: "Benefactor Schlagen SP", price: "$305,965" },
+            { name: "Dinka Nexus RR", price: "$302,662" },
+            { name: "Pegassi Tempesta", price: "$299,588" },
+            { name: "Ubermacht Sentinel XS", price: "$292,500" },
+            { name: "Pegassi Vacca", price: "$290,625" },
+            { name: "Hijak Tachyon", price: "$245,625" },
+            { name: "Obey 10F Cabrio", price: "$245,625" },
+            { name: "Benefactor Schlagen Roadster", price: "$225,301" },
+            { name: "Dewbauchee Solace Vitesse", price: "$218,750" },
+            { name: "Pegassi Vacca (Low)", price: "$211,850" },
+            { name: "Benefactor Schlagen GT", price: "$211,850" }
+        ];
+
+        const vehicleSelect = document.getElementById('vehicleSelect');
+        const selectedCarBanner = document.getElementById('selectedCarBanner');
+        const selectedCarName = document.getElementById('selectedCarName');
+
+        vehicles.forEach(vehicle => {
+            const option = document.createElement('option');
+            option.value = vehicle.name;
+            option.textContent = vehicle.name + ' - ' + vehicle.price;
+            vehicleSelect.appendChild(option);
+        });
+
+        const otherOption = document.createElement('option');
+        otherOption.value = "Other/Undecided";
+        otherOption.textContent = "Other / Undecided - Show me options";
+        vehicleSelect.appendChild(otherOption);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const preSelectedCar = urlParams.get('car');
+
+        if (preSelectedCar) {
+            const decodedCar = decodeURIComponent(preSelectedCar);
+            const carExists = vehicles.some(v => v.name === decodedCar);
+            if (carExists) {
+                vehicleSelect.value = decodedCar;
+                selectedCarName.textContent = decodedCar;
+                selectedCarBanner.style.display = 'flex';
+            }
+        }
+
+        vehicleSelect.addEventListener('change', function() {
+            if (this.value && this.value !== "Other/Undecided") {
+                selectedCarName.textContent = this.value;
+                selectedCarBanner.style.display = 'flex';
+            } else {
+                selectedCarBanner.style.display = 'none';
+            }
+        });
+
+        // Set minimum datetime to now and round to nearest 30 minutes
+        const datetimeInput = document.getElementById('appointmentTime');
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        
+        // Round to nearest 30 minutes
+        const minutes = now.getMinutes();
+        if (minutes < 30) {
+            now.setMinutes(30);
+        } else {
+            now.setMinutes(60);
+        }
+        now.setSeconds(0);
+        now.setMilliseconds(0);
+        
+        datetimeInput.min = now.toISOString().slice(0, 16);
+
+        // Round user selection to 30 minutes
+        datetimeInput.addEventListener('change', function() {
+            const date = new Date(this.value);
+            const minutes = date.getMinutes();
+            if (minutes < 15) {
+                date.setMinutes(0);
+            } else if (minutes < 45) {
+                date.setMinutes(30);
+            } else {
+                date.setMinutes(0);
+                date.setHours(date.getHours() + 1);
+            }
+            date.setSeconds(0);
+            this.value = date.toISOString().slice(0, 16);
+        });
+
+        const form = document.querySelector('form');
+        const submitBtn = document.querySelector('.submit-btn');
+        const modal = document.getElementById('successModal');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+
+            try {
+                const formData = new FormData(form);
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams(formData).toString()
+                });
+
+                if (response.ok) {
+                    modal.classList.add('active');
+                    form.reset();
+                    selectedCarBanner.style.display = 'none';
+                } else {
+                    alert('Something went wrong. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error submitting form. Please try again.');
+            } finally {
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+            }
+        });
+
+        function closeModal() {
+            modal.classList.remove('active');
+            window.location.href = 'index.html';
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(13, 17, 23, 0.98)';
+            } else {
+                nav.style.background = 'rgba(13, 17, 23, 0.95)';
+            }
+        });
     </script>
 </body>
 </html>
