@@ -176,7 +176,6 @@
             border-color: var(--accent-gold);
         }
 
-        /* Time selector styling */
         .time-selector {
             display: flex;
             align-items: center;
@@ -273,11 +272,11 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Full Name <span>*</span></label>
-                    <input type="text" id="name" name="name" required placeholder="John Doe">
+                    <input type="text" id="name" name="name" required placeholder="Von Hayes">
                 </div>
                 <div class="form-group">
                     <label>State ID <span>*</span></label>
-                    <input type="text" id="state_id" name="state_id" required placeholder="SA-12345678">
+                    <input type="text" id="state_id" name="state_id" required placeholder="3288">
                 </div>
             </div>
 
@@ -290,17 +289,11 @@
                     <label>Vehicle Interest <span>*</span></label>
                     <select id="car_interest" name="car_interest" required>
                         <option value="">Select a vehicle...</option>
-                        <option value="Grotti Turismo Omaggio">Grotti Turismo Omaggio</option>
-                        <option value="Pegassi Infernus">Pegassi Infernus</option>
-                        <option value="Pegassi Tempesta Spyder">Pegassi Tempesta Spyder</option>
-                        <option value="Grotti Itali GTO">Grotti Itali GTO</option>
-                        <option value="Pfister 811">Pfister 811</option>
-                        <option value="Other">Other - See Notes</option>
+                        <!-- Populated by JavaScript from inventory -->
                     </select>
                 </div>
             </div>
 
-            <!-- Date and Time Row -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Preferred Date <span>*</span></label>
@@ -324,9 +317,9 @@
                 <div class="form-group">
                     <label>Financing Interest</label>
                     <select id="financing" name="financing">
-                        <option value="No">No financing needed</option>
-                        <option value="Yes">Yes - interested in financing</option>
-                        <option value="Maybe">Maybe - want to discuss options</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No" selected>No</option>
+                        <option value="IDK">IDK</option>
                     </select>
                 </div>
             </div>
@@ -347,13 +340,82 @@
     </div>
 
     <script>
-        // Initialize time selector with only :00 and :30, 24-hour format
+        // Vehicle inventory data (same as inventory.html)
+        const vehicles = [
+            { name: "Grotti Turismo Omaggio", price: "$425,833" },
+            { name: "Bravado Banshee GTS", price: "$402,500" },
+            { name: "Pegassi Infernus", price: "$401,400" },
+            { name: "Pegassi Tempesta Spyder", price: "$388,312" },
+            { name: "Grotti Itali GTO", price: "$366,465" },
+            { name: "Obey 10F Widebody", price: "$363,593" },
+            { name: "Pegassi Zorrusso", price: "$362,250" },
+            { name: "Lampadati Corsita", price: "$352,100" },
+            { name: "Pegassi Reaper", price: "$345,000" },
+            { name: "Bravado Banshee 900R", price: "$330,093" },
+            { name: "Pegassi Tempesta Fuoristrada", price: "$323,872" },
+            { name: "Benefactor Schlagen SP", price: "$305,965" },
+            { name: "Dinka Nexus RR", price: "$302,662" },
+            { name: "Pegassi Tempesta", price: "$299,588" },
+            { name: "Ubermacht Sentinel XS", price: "$292,500" },
+            { name: "Pegassi Vacca", price: "$290,625" },
+            { name: "Hijak Tachyon", price: "$245,625" },
+            { name: "Obey 10F Cabrio", price: "$245,625" },
+            { name: "Benefactor Schlagen Roadster", price: "$225,301" },
+            { name: "Dewbauchee Solace Vitesse", price: "$218,750" },
+            { name: "Pegassi Vacca", price: "$211,850" },
+            { name: "Benefactor Schlagen GT", price: "$211,850" }
+        ];
+
+        // Populate vehicle dropdown from inventory
+        function populateVehicleDropdown() {
+            const select = document.getElementById('car_interest');
+            
+            vehicles.forEach(vehicle => {
+                const option = document.createElement('option');
+                option.value = vehicle.name;
+                option.textContent = vehicle.name + ' (' + vehicle.price + ')';
+                select.appendChild(option);
+            });
+        }
+
+        // Check for pre-selected vehicle from URL
+        function checkPreselectedVehicle() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const preselectedCar = urlParams.get('car');
+            
+            if (preselectedCar) {
+                const select = document.getElementById('car_interest');
+                // Find matching vehicle (handle URL encoding)
+                const decodedCar = decodeURIComponent(preselectedCar);
+                
+                // Check if option exists
+                let found = false;
+                for (let i = 0; i < select.options.length; i++) {
+                    if (select.options[i].value === decodedCar) {
+                        select.selectedIndex = i;
+                        found = true;
+                        break;
+                    }
+                }
+                
+                // If not found in list, add it as a custom option
+                if (!found && decodedCar) {
+                    const option = document.createElement('option');
+                    option.value = decodedCar;
+                    option.textContent = decodedCar;
+                    select.insertBefore(option, select.options[1]);
+                    select.selectedIndex = 1;
+                }
+            }
+        }
+
+        // Initialize time selector
         function initTimeSelector() {
             const hourSelect = document.getElementById('hour-select');
             const minuteSelect = document.getElementById('minute-select');
             const dateInput = document.getElementById('appointment_date');
 
-            // Populate hours (0-23 for all timezones)
+            // Populate hours (0-23)
             for (let i = 0; i < 24; i++) {
                 const option = document.createElement('option');
                 option.value = String(i).padStart(2, '0');
@@ -390,7 +452,6 @@
             const statusDiv = document.getElementById('statusMessage');
             const formData = new FormData(this);
             
-            // Build data object
             const data = {
                 name: formData.get('name'),
                 state_id: formData.get('state_id'),
@@ -423,7 +484,8 @@
                         ? '✓ Appointment already sent!' 
                         : '✓ Appointment booked! Check your phone for confirmation.';
                     this.reset();
-                    initTimeSelector(); // Reset time defaults
+                    initTimeSelector();
+                    populateVehicleDropdown(); // Repopulate after reset
                 } else {
                     throw new Error(result.error || 'Booking failed');
                 }
@@ -433,13 +495,14 @@
                 console.error('Error:', error);
             }
             
-            // Hide message after 5 seconds
             setTimeout(() => {
                 statusDiv.className = 'status-message';
             }, 5000);
         });
 
         // Initialize on load
+        populateVehicleDropdown();
+        checkPreselectedVehicle();
         initTimeSelector();
     </script>
 </body>
