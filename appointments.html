@@ -1,334 +1,574 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Appointment | Black Label Autos</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="icon" type="image/svg+xml" href="assets/Mark/favicon-32.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/Mark/favicon-32-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/Mark/favicon-16-16.png">
+    <link rel="apple-touch-icon" href="assets/Mark/mark-plate-gold-180.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-primary: #0d1117;
-            --bg-secondary: #161b22;
-            --bg-tertiary: #21262d;
-            --accent-gold: #c9a227;
-            --accent-gold-light: #e8d48b;
-            --text-primary: #f0f6fc;
-            --text-secondary: #8b949e;
-            --border: #30363d;
+        /* ==========================================================
+           BLACK LABEL TOKENS (dark theme)
+           Semantic tokens only. Page CSS below never uses a raw hex.
+           ========================================================== */
+        :root, [data-theme="dark"] {
+            color-scheme: dark;
+
+            --surface-page: #0d0b0a;
+            --surface: #171513;
+            --surface-raised: #22201d;
+            --surface-overlay: #2d2a27;
+            --surface-sunk: #0d0b0a;
+
+            --text-primary: #f8f6f5;
+            --text-secondary: #bab7b3;
+            --text-muted: #989591;
+            --text-disabled: #7c7975;
+            --text-accent: #ddad57;
+            --text-on-accent: #0d0b0a;
+
+            --accent: #ddad57;
+            --accent-hover: #e9bf76;
+            --accent-pressed: #cc9835;
+            --accent-wash: #ddad5714;
+            --accent-border: #ddad5747;
+            --focus-ring: #ddad57;
+            --border-hairline: #2d2a27;
+            --border: #3f3d39;
+            --border-control: #8e703c;
+            --border-strong: #af801c;
+
+            --success-text: #8bdcc2;  --success-solid: #69c6aa;  --success-wash: #69c6aa14;  --success-border: #69c6aa52;
+            --warning-text: #ffaa6b;  --warning-solid: #f38d3a;  --warning-wash: #f38d3a14;  --warning-border: #f38d3a52;
+            --danger-text: #ed7473;   --danger-solid: #e55458;   --danger-wash: #e5545814;   --danger-border: #e5545852;
+            --info-text: #9dc5ec;     --info-solid: #80b1e0;     --info-wash: #80b1e014;     --info-border: #80b1e052;
+
+            --scrim: #0d0b0ab8;
+
+            --font-display: Archivo, 'Archivo Expanded', 'Helvetica Neue', Arial, sans-serif;
+            --font-sans: 'Instrument Sans', Archivo, 'Helvetica Neue', Arial, sans-serif;
+            --font-data: Archivo, 'Helvetica Neue', Arial, sans-serif;
+
+            --text-display-2xl: 700 72px/68px var(--font-display);
+            --text-display-xl: 700 56px/54px var(--font-display);
+            --text-display-lg: 700 44px/46px var(--font-display);
+            --text-display-md: 700 34px/38px var(--font-display);
+            --text-heading-1: 700 28px/34px var(--font-display);
+            --text-heading-2: 700 22px/28px var(--font-display);
+            --text-heading-3: 600 18px/24px var(--font-display);
+            --text-eyebrow: 600 11px/14px var(--font-display);
+            --text-title-lg: 600 20px/28px var(--font-sans);
+            --text-title: 600 17px/24px var(--font-sans);
+            --text-body-lg: 400 17px/28px var(--font-sans);
+            --text-body: 400 15px/24px var(--font-sans);
+            --text-body-sm: 400 13.5px/20px var(--font-sans);
+            --text-label: 500 13px/16px var(--font-sans);
+            --text-label-micro: 600 11.5px/14px var(--font-sans);
+            --text-caption: 400 12px/16px var(--font-sans);
+            --text-button: 600 14px/16px var(--font-sans);
+            --text-button-sm: 600 13px/16px var(--font-sans);
+            --text-input-touch: 400 16px/24px var(--font-sans);
+            --text-price-xl: 600 34px/36px var(--font-data);
+            --text-price: 600 22px/26px var(--font-data);
+            --text-price-sm: 600 16px/20px var(--font-data);
+            --text-numeric: 500 15px/20px var(--font-data);
+            --text-numeric-sm: 500 13px/18px var(--font-data);
+            --text-stat: 600 26px/30px var(--font-data);
+
+            --space-half: 2px; --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+            --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px; --space-12: 48px;
+            --space-16: 64px; --space-20: 80px; --space-24: 96px; --space-32: 128px;
+
+            --radius-none: 0; --radius-xs: 2px; --radius-sm: 3px; --radius-md: 4px; --radius-lg: 6px; --radius-full: 999px;
+
+            --shadow-none: none;
+            --shadow-raised: 0 1px 2px #0000004d, 0 8px 24px #00000059;
+            --shadow-overlay: 0 4px 8px #00000059, 0 16px 40px #00000073;
+            --shadow-modal: 0 8px 16px #00000066, 0 32px 80px #0000008c;
+            --shadow-focus: 0 0 0 2px var(--surface-page), 0 0 0 4px var(--focus-ring);
+
+            --stroke-1: 1px; --stroke-2: 2px; --stroke-3: 3px;
+            --opacity-disabled: 0.4;
+
+            --control-sm: 32px; --control-md: 40px; --control-lg: 48px; --control-xl: 56px; --tap-min: 44px;
+            --icon-sm: 16px; --icon-md: 20px; --icon-lg: 24px; --icon-xl: 32px;
+            --plate-nav: 28px; --field-max: 520px;
+            --container-prose: 680px; --container-md: 900px; --container-lg: 1180px; --container-xl: 1400px;
+            --z-base: 0; --z-raised: 10; --z-sticky: 100; --z-drawer: 400; --z-modal: 500; --z-toast: 700; --z-tooltip: 900;
+
+            --bl-dur-fast: 120ms; --bl-dur: 200ms; --bl-dur-slow: 320ms; --bl-dur-deliberate: 520ms;
+            --bl-ease: cubic-bezier(.2, .7, .2, 1);
+
+            --nav-h: calc(var(--space-16) + var(--space-2));
+            --page-gutter: var(--space-12);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        @media (max-width: 1024px) { :root { --page-gutter: var(--space-8); } }
+        @media (max-width: 768px) { :root { --page-gutter: var(--space-4); } }
+        @media (max-width: 520px) { :root { --text-display-md: 700 28px/34px var(--font-display); } }
+        @media (prefers-reduced-motion: reduce) {
+            :root { --bl-dur-fast: 1ms; --bl-dur: 1ms; --bl-dur-slow: 1ms; --bl-dur-deliberate: 1ms; }
+            *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
+        }
+
+        /* ==========================================================
+           BASE
+           ========================================================== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { background: var(--surface-page); }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-primary);
+            font: var(--text-body);
+            background: var(--surface-page);
             color: var(--text-primary);
-            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
             min-height: 100vh;
         }
 
-        nav {
-            position: fixed;
-            top: 0;
+        img { display: block; max-width: 100%; }
+        a { color: inherit; text-decoration: none; }
+        button, input, select, textarea { font: inherit; color: inherit; }
+        :focus { outline: none; }
+        :focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+        ::selection { background: var(--accent); color: var(--text-on-accent); }
+
+        h1, h2, h3 { font-stretch: 112%; letter-spacing: -0.01em; }
+
+        .eyebrow {
+            display: inline-block;
+            font: var(--text-eyebrow);
+            font-stretch: 112%;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--text-secondary);
+        }
+        .eyebrow::before {
+            content: "";
+            display: block;
+            width: var(--space-6);
+            height: var(--stroke-3);
+            margin-bottom: var(--space-3);
+            background: var(--accent);
+        }
+
+        .bl-ic {
+            width: var(--icon-md);
+            height: var(--icon-md);
+            flex: none;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            stroke-linecap: butt;
+            stroke-linejoin: miter;
+        }
+        .bl-ic--sm { width: var(--icon-sm); height: var(--icon-sm); }
+        .bl-ic--lg { width: var(--icon-lg); height: var(--icon-lg); }
+
+        .bl-page {
             width: 100%;
-            padding: 1.2rem 5%;
-            background: rgba(13, 17, 23, 0.95);
-            backdrop-filter: blur(20px);
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+            max-width: calc(var(--container-lg) + var(--page-gutter) * 2);
+            margin: 0 auto;
+            padding: 0 var(--page-gutter);
         }
 
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            text-decoration: none;
-        }
-
-        .nav-logo-icon {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%);
-            border-radius: 8px;
-            display: flex;
+        /* ==========================================================
+           BUTTONS
+           ========================================================== */
+        .bl-btn {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
-            color: var(--bg-primary);
-        }
-
-        .nav-logo-text {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 700;
+            gap: var(--space-2);
+            height: var(--control-md);
+            padding: 0 var(--space-4);
+            border: var(--stroke-1) solid transparent;
+            border-radius: var(--radius-md);
+            background: transparent;
             color: var(--text-primary);
-            letter-spacing: 1px;
-        }
-
-        .nav-logo-text span {
-            color: var(--accent-gold);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
+            font: var(--text-button);
+            white-space: nowrap;
+            cursor: pointer;
             text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: color 0.3s;
+            transition: background-color var(--bl-dur-fast) var(--bl-ease), border-color var(--bl-dur-fast) var(--bl-ease), color var(--bl-dur-fast) var(--bl-ease);
+        }
+        .bl-btn .bl-ic { width: var(--icon-sm); height: var(--icon-sm); }
+        .bl-btn--primary { background: var(--accent); color: var(--text-on-accent); }
+        .bl-btn--primary:hover { background: var(--accent-hover); }
+        .bl-btn--primary:active { background: var(--accent-pressed); }
+        .bl-btn--secondary { border-color: var(--border-control); }
+        .bl-btn--secondary:hover { border-color: var(--border-strong); background: var(--accent-wash); }
+        .bl-btn--tertiary { color: var(--text-secondary); padding: 0 var(--space-2); }
+        .bl-btn--tertiary:hover { color: var(--text-primary); }
+        .bl-btn--lg { height: var(--control-lg); padding: 0 var(--space-6); }
+        .bl-btn--block { width: 100%; }
+        @media (pointer: coarse) { .bl-btn { min-height: var(--tap-min); } }
+        @media (max-width: 768px) { .bl-btn--primary.bl-btn--lg { height: var(--control-xl); } }
+
+        /* ==========================================================
+           NAVBAR
+           ========================================================== */
+        nav.bl-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-h);
+            z-index: var(--z-sticky);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-6);
+            padding: 0 var(--page-gutter);
+            background: var(--surface);
+            border-bottom: var(--stroke-1) solid var(--border-hairline);
+        }
+        .nav-logo { display: inline-flex; align-items: center; flex: none; border-radius: var(--radius-sm); }
+        .nav-logo img { height: var(--plate-nav); width: auto; }
+        .label-short { display: none; }
+        @media (max-width: 520px) {
+            .nav-logo img { height: calc(var(--plate-nav) - var(--space-1)); }
+            .label-long { display: none; }
+            .label-short { display: inline; }
         }
 
-        .nav-links a:hover {
-            color: var(--accent-gold);
+        /* ==========================================================
+           BOOKING LAYOUT
+           ========================================================== */
+        .container { padding-top: calc(var(--nav-h) + var(--space-16)); padding-bottom: var(--space-24); }
+
+        .booking-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
+            gap: var(--space-12);
+            align-items: start;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 120px 20px 60px;
-        }
-
-        .page-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .page-header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-gold) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .page-header h1 span {
-            color: var(--accent-gold);
-        }
-
-        .page-header p {
-            color: var(--text-secondary);
-        }
+        .page-header { margin-bottom: var(--space-10); max-width: var(--container-prose); }
+        .page-header h1 { font: var(--text-display-md); font-stretch: 112%; margin: var(--space-2) 0 var(--space-3); }
+        .page-header p { font: var(--text-body-lg); color: var(--text-secondary); }
 
         .booking-form {
-            background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(22, 27, 34, 0.8) 100%);
-            border: 1px solid rgba(201, 162, 39, 0.2);
-            border-radius: 16px;
-            padding: 2.5rem;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(201, 162, 39, 0.1);
+            padding: var(--space-10);
+            background: var(--surface);
+            border: var(--stroke-1) solid var(--border-hairline);
+            border-radius: var(--radius-lg);
         }
+
+        .form-section-title {
+            font: var(--text-label);
+            color: var(--text-muted);
+            padding-bottom: var(--space-3);
+            margin-bottom: var(--space-6);
+            border-bottom: var(--stroke-1) solid var(--border-hairline);
+        }
+        .form-section-title:not(:first-of-type) { margin-top: var(--space-10); }
 
         .form-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--space-6);
+            margin-bottom: var(--space-6);
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
+        .form-group { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+        .form-group.full-width { grid-column: 1 / -1; }
 
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
-
-        .form-group label {
-            color: var(--text-primary);
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
-        }
-
-        .form-group label span {
-            color: var(--accent-gold);
-        }
+        .form-label { font: var(--text-label); color: var(--text-primary); }
+        .form-label span { color: var(--text-muted); }
+        .form-help { font: var(--text-body-sm); color: var(--text-muted); }
 
         .form-group input,
         .form-group select,
         .form-group textarea {
-            padding: 12px 16px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--bg-tertiary);
+            width: 100%;
+            height: var(--control-lg);
+            padding: 0 var(--space-4);
+            background: var(--surface-sunk);
+            border: var(--stroke-1) solid var(--border-control);
+            border-radius: var(--radius-sm);
             color: var(--text-primary);
-            font-size: 1rem;
-            transition: border-color 0.3s;
+            font: var(--text-body);
+            transition: border-color var(--bl-dur-fast) var(--bl-ease);
         }
-
+        .form-group input::placeholder,
+        .form-group textarea::placeholder { color: var(--text-muted); }
+        .form-group input:hover,
+        .form-group select:hover,
+        .form-group textarea:hover { border-color: var(--border-strong); }
         .form-group input:focus,
         .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent-gold);
-            box-shadow: 0 0 20px rgba(201, 162, 39, 0.2), inset 0 0 10px rgba(201, 162, 39, 0.05);
+        .form-group textarea:focus { border-color: var(--border-strong); box-shadow: var(--shadow-focus); }
+
+        .form-group select { appearance: none; -webkit-appearance: none; padding-right: var(--space-10); cursor: pointer; }
+        .form-group select option { background: var(--surface-raised); color: var(--text-primary); }
+        .form-group textarea { height: auto; min-height: calc(var(--control-lg) * 2.5); padding: var(--space-3) var(--space-4); resize: vertical; }
+        .form-group input[type="date"] { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+        .form-group input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.7; }
+
+        .bl-select { position: relative; display: block; min-width: 0; }
+        .bl-select > .bl-ic {
+            position: absolute;
+            right: var(--space-4);
+            top: 50%;
+            transform: translateY(-50%);
+            width: var(--icon-sm);
+            height: var(--icon-sm);
+            color: var(--text-muted);
+            pointer-events: none;
         }
 
-        .time-selector {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .time-selector { display: flex; align-items: center; gap: var(--space-2); }
+        .time-selector .bl-select { flex: 1; }
+        .time-selector select { font-family: var(--font-data); font-variant-numeric: tabular-nums; text-align: left; }
+        .time-separator { font: var(--text-heading-2); color: var(--text-muted); }
 
-        .time-selector select {
-            width: auto;
-            min-width: 70px;
-            text-align: center;
-            font-size: 1.1rem;
-            cursor: pointer;
+        .form-actions {
+            margin-top: var(--space-10);
+            padding-top: var(--space-6);
+            border-top: var(--stroke-1) solid var(--border-hairline);
         }
-
-        .time-separator {
-            color: var(--accent-gold);
-            font-size: 1.3rem;
-            font-weight: bold;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 16px;
-            background: var(--accent-gold);
-            color: var(--bg-primary);
-            border: none;
-            border-radius: 8px;
-            font-family: 'Inter', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 1rem;
-        }
-
-        .submit-btn:hover {
-            background: var(--accent-gold-light);
-            transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(201, 162, 39, 0.4), 0 0 30px rgba(201, 162, 39, 0.2);
-            letter-spacing: 2px;
-        }
+        .form-actions .form-help { margin-top: var(--space-3); text-align: center; }
 
         .success-message {
             display: none;
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background: rgba(46, 204, 113, 0.2);
-            border: 1px solid #2ecc71;
-            color: #2ecc71;
-            border-radius: 8px;
-            text-align: center;
+            gap: var(--space-3);
+            margin-top: var(--space-6);
+            padding: var(--space-4);
+            background: var(--success-wash);
+            border: var(--stroke-1) solid var(--success-border);
+            border-radius: var(--radius-md);
+            color: var(--success-text);
         }
+        .success-message.visible { display: flex; }
+        .success-title { font: var(--text-title); color: var(--text-primary); }
+        .success-body { font: var(--text-body-sm); color: var(--text-secondary); }
 
-        .success-message.visible {
-            display: block;
+        @media (max-width: 768px) {
+            .form-group input,
+            .form-group select,
+            .form-group textarea { font: var(--text-input-touch); }
         }
-
         @media (max-width: 600px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
+            .form-row { grid-template-columns: 1fr; }
+        }
+
+        /* Context panel */
+        .booking-aside {
+            position: sticky;
+            top: calc(var(--nav-h) + var(--space-8));
+            padding: var(--space-8);
+            background: var(--surface);
+            border: var(--stroke-1) solid var(--border-hairline);
+            border-radius: var(--radius-lg);
+        }
+        .booking-aside h2 { font: var(--text-heading-3); font-stretch: 112%; margin-bottom: var(--space-6); }
+
+        .next-steps { list-style: none; }
+        .next-steps li {
+            display: grid;
+            grid-template-columns: var(--space-8) minmax(0, 1fr);
+            gap: var(--space-3);
+            padding: var(--space-4) 0;
+            border-top: var(--stroke-1) solid var(--border-hairline);
+        }
+        .step-num { font: var(--text-numeric-sm); font-variant-numeric: tabular-nums; color: var(--text-muted); }
+        .step-title { font: var(--text-title); color: var(--text-primary); }
+        .step-body { font: var(--text-body-sm); color: var(--text-secondary); margin-top: var(--space-1); }
+
+        .aside-contact {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            margin-top: var(--space-4);
+            padding: var(--space-4);
+            background: var(--surface-sunk);
+            border: var(--stroke-1) solid var(--border-hairline);
+            border-radius: var(--radius-md);
+            color: var(--text-muted);
+        }
+        .aside-contact div { font: var(--text-body-sm); color: var(--text-muted); }
+        .aside-contact a { display: block; font: var(--text-numeric); font-variant-numeric: tabular-nums; color: var(--text-primary); }
+        .aside-contact a:hover { color: var(--text-accent); }
+
+        @media (max-width: 1024px) {
+            .booking-layout { grid-template-columns: 1fr; gap: var(--space-8); }
+            .booking-aside { position: static; }
+        }
+        @media (max-width: 768px) {
+            .container { padding-top: calc(var(--nav-h) + var(--space-10)); padding-bottom: var(--space-16); }
+            .booking-form { padding: var(--space-5); }
+            .booking-aside { padding: var(--space-5); }
         }
     </style>
 </head>
-<body>
-    <nav>
-        <a href="index.html" class="nav-logo">
-            <div class="nav-logo-icon">
-                <i class="fas fa-crown"></i>
-            </div>
-            <div class="nav-logo-text">BLACK <span>LABEL</span></div>
+<body class="bl-root">
+    <!-- Icon set: 24px grid, 1.5 stroke, butt caps, mitre joins -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <defs>
+            <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+            <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M20 12H4.5M10.5 6l-6 6 6 6"/></symbol>
+            <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5 9.5 17 19 7.5"/></symbol>
+            <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M3.75 5.25h16.5v15H3.75zM3.75 9.75h16.5M8.25 3v4.5M15.75 3v4.5"/></symbol>
+            <symbol id="i-phone" viewBox="0 0 24 24"><path d="M7.5 3h9v18h-9zM10.5 18h3"/></symbol>
+        </defs>
+    </svg>
+
+    <nav class="bl-nav">
+        <a href="index.html" class="nav-logo" aria-label="Black Label Autos, home">
+            <img src="assets/Logo/blacklabel-primary.svg" alt="Black Label" width="256" height="28">
+        </a>
+        <a href="/inventory" class="bl-btn bl-btn--tertiary">
+            <svg class="bl-ic"><use href="#i-arrow-left"></use></svg> <span class="label-long">Back to stock</span><span class="label-short">Stock</span>
         </a>
     </nav>
 
-    <div class="container">
-        <div class="page-header">
-            <h1>Book <span>Appointment</span></h1>
-            <p>Schedule your private viewing or test drive</p>
-        </div>
+    <div class="container bl-page">
+        <div class="booking-layout">
+            <div>
+                <div class="page-header">
+                    <span class="eyebrow">Book a viewing</span>
+                    <h1>Book an appointment</h1>
+                    <p>Schedule your private viewing or test drive.</p>
+                </div>
 
-        <!-- Netlify Form - submits to Netlify, triggers function -->
-        <form class="booking-form" name="appointments" method="POST" data-netlify="true" action="/success">
-            <input type="hidden" name="form-name" value="appointments">
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Full Name <span>*</span></label>
-                    <input type="text" name="name" required placeholder="Von Hayes">
-                </div>
-                <div class="form-group">
-                    <label>State ID <span>*</span></label>
-                    <input type="text" name="state_id" required placeholder="3288">
-                </div>
-            </div>
+                <!-- Netlify Form - submits to Netlify, triggers function -->
+                <form class="booking-form" name="appointments" method="POST" data-netlify="true" action="/success">
+                    <input type="hidden" name="form-name" value="appointments">
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Phone Number <span>*</span></label>
-                    <input type="tel" name="phone" required placeholder="4242120069">
-                </div>
-                <div class="form-group">
-                    <label>Vehicle Interest <span>*</span></label>
-                    <select name="car_interest" id="car_interest" required>
-                        <option value="">Select a vehicle...</option>
-                    </select>
-                </div>
-            </div>
+                    <h2 class="form-section-title">Your details</h2>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Preferred Date <span>*</span></label>
-                    <input type="date" name="appointment_date" id="appointment_date" required>
-                </div>
-                <div class="form-group">
-                    <label>Preferred Time <span>*</span></label>
-                    <div class="time-selector">
-                        <select name="appointment_hour" id="hour-select" required></select>
-                        <span class="time-separator">:</span>
-                        <select name="appointment_minute" id="minute-select" required></select>
+                    <div class="form-row">
+                        <label class="form-group">
+                            <span class="form-label">Full name <span>*</span></span>
+                            <input type="text" name="name" required placeholder="Von Hayes" autocomplete="name">
+                        </label>
+                        <label class="form-group">
+                            <span class="form-label">State ID <span>*</span></span>
+                            <input type="text" name="state_id" required placeholder="3288">
+                        </label>
                     </div>
+
+                    <div class="form-row">
+                        <label class="form-group">
+                            <span class="form-label">Phone number <span>*</span></span>
+                            <input type="tel" name="phone" required placeholder="4242120069" inputmode="tel" autocomplete="tel">
+                            <span class="form-help">We send your confirmation here by text.</span>
+                        </label>
+                        <label class="form-group">
+                            <span class="form-label">Vehicle <span>*</span></span>
+                            <span class="bl-select">
+                                <select name="car_interest" id="car_interest" required>
+                                    <option value="">Select a vehicle</option>
+                                </select>
+                                <svg class="bl-ic"><use href="#i-chevron-down"></use></svg>
+                            </span>
+                        </label>
+                    </div>
+
+                    <h2 class="form-section-title">When</h2>
+
+                    <div class="form-row">
+                        <label class="form-group">
+                            <span class="form-label">Preferred date <span>*</span></span>
+                            <input type="date" name="appointment_date" id="appointment_date" required>
+                        </label>
+                        <div class="form-group" role="group" aria-labelledby="timeLabel">
+                            <span class="form-label" id="timeLabel">Preferred time <span>*</span></span>
+                            <div class="time-selector">
+                                <span class="bl-select">
+                                    <select name="appointment_hour" id="hour-select" required aria-label="Hour"></select>
+                                    <svg class="bl-ic"><use href="#i-chevron-down"></use></svg>
+                                </span>
+                                <span class="time-separator">:</span>
+                                <span class="bl-select">
+                                    <select name="appointment_minute" id="minute-select" required aria-label="Minute"></select>
+                                    <svg class="bl-ic"><use href="#i-chevron-down"></use></svg>
+                                </span>
+                            </div>
+                            <span class="form-help">24-hour clock, on the hour or half past.</span>
+                        </div>
+                    </div>
+
+                    <h2 class="form-section-title">Anything else</h2>
+
+                    <div class="form-row">
+                        <label class="form-group">
+                            <span class="form-label">Financing interest</span>
+                            <span class="bl-select">
+                                <select name="financing">
+                                    <option value="Yes">Yes</option>
+                                    <option value="No" selected>No</option>
+                                    <option value="IDK">Not sure yet</option>
+                                </select>
+                                <svg class="bl-ic"><use href="#i-chevron-down"></use></svg>
+                            </span>
+                        </label>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-group full-width">
+                            <span class="form-label">Additional notes</span>
+                            <textarea name="notes" rows="3" placeholder="Any specific requests or questions"></textarea>
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn bl-btn bl-btn--primary bl-btn--lg bl-btn--block">
+                            <svg class="bl-ic"><use href="#i-calendar"></use></svg> Book appointment
+                        </button>
+                        <p class="form-help">A text confirmation is sent to the phone number above.</p>
+                    </div>
+
+                    <div class="success-message" id="successMsg" role="status">
+                        <svg class="bl-ic"><use href="#i-check"></use></svg>
+                        <div>
+                            <div class="success-title">Appointment booked</div>
+                            <div class="success-body">Check your phone for your text confirmation.</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <aside class="booking-aside" aria-label="What happens next">
+                <h2>What happens next</h2>
+                <ol class="next-steps">
+                    <li>
+                        <span class="step-num">01</span>
+                        <div>
+                            <div class="step-title">Choose a car and a time</div>
+                            <div class="step-body">Pick any vehicle in stock and a slot on the hour or half past.</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-num">02</span>
+                        <div>
+                            <div class="step-title">We text you</div>
+                            <div class="step-body">A confirmation is sent straight to the phone number you give us.</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-num">03</span>
+                        <div>
+                            <div class="step-title">Meet the car</div>
+                            <div class="step-body">Your private viewing or test drive, at the time you booked.</div>
+                        </div>
+                    </li>
+                </ol>
+                <div class="aside-contact">
+                    <svg class="bl-ic"><use href="#i-phone"></use></svg>
+                    <div>Prefer to call?<a href="tel:4242120069">(424) 212-0069</a></div>
                 </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Financing Interest</label>
-                    <select name="financing">
-                        <option value="Yes">Yes</option>
-                        <option value="No" selected>No</option>
-                        <option value="IDK">IDK</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group full-width">
-                    <label>Additional Notes</label>
-                    <textarea name="notes" rows="3" placeholder="Any specific requests or questions..."></textarea>
-                </div>
-            </div>
-
-            <button type="submit" class="submit-btn">
-                <i class="fas fa-calendar-check"></i> Book Appointment
-            </button>
-
-            <div class="success-message" id="successMsg">
-                ✓ Appointment booked! Check your phone for confirmation.
-            </div>
-        </form>
+            </aside>
+        </div>
     </div>
 
     <script>
